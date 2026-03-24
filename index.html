@@ -4,478 +4,744 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>ORIGEM — Premium Coffee</title>
-  <link rel="preconnect" href="https://fonts.googleapis.com">
   <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Montserrat:wght@300;400;500&display=swap" rel="stylesheet">
   <style>
-    * { margin:0; padding:0; box-sizing:border-box; }
-    :root {
-      --black: #080808;
-      --gold: #B8962E;
-      --gold-light: #D4AF5A;
-      --cream: #F5EDD8;
-      --grey: #888;
+    *{margin:0;padding:0;box-sizing:border-box;}
+    :root{
+      --black:#080808;--gold:#B8962E;--gold2:#D4AF5A;
+      --cream:#F5EDD8;--grey:#888;--dark:#1C0A00;
     }
-    html { scroll-behavior: smooth; }
-    body {
-      font-family: 'Montserrat', sans-serif;
-      background: var(--black);
-      color: var(--cream);
-      min-height: 100vh;
-    }
+    html{scroll-behavior:smooth;}
+    body{font-family:'Montserrat',sans-serif;background:var(--black);color:var(--cream);padding-bottom:80px;}
 
-    /* NAV */
-    nav {
-      position: fixed; top:0; width:100%; z-index:100;
-      display:flex; justify-content:space-between; align-items:center;
-      padding: 28px 60px;
-      background: linear-gradient(to bottom, rgba(8,8,8,0.95), transparent);
+    /* ── BOTTOM NAV ── */
+    .bottom-nav{
+      position:fixed;bottom:0;left:0;right:0;z-index:200;
+      background:rgba(8,8,8,0.97);border-top:1px solid rgba(184,150,46,0.2);
+      display:flex;justify-content:space-around;align-items:center;
+      padding:10px 0 14px;
     }
-    .nav-logo img { height: 40px; filter: brightness(1.1); }
-    .nav-logo-text {
-      font-family: 'Cormorant Garamond', serif;
-      font-size: 22px;
-      letter-spacing: 10px;
-      color: var(--gold);
-      font-weight: 300;
+    .nav-item{
+      display:flex;flex-direction:column;align-items:center;gap:4px;
+      font-size:9px;letter-spacing:2px;text-transform:uppercase;
+      color:var(--grey);cursor:pointer;transition:color 0.2s;flex:1;
+      border:none;background:none;
     }
-    .nav-links a {
-      color: var(--cream);
-      text-decoration: none;
-      margin-left: 36px;
-      font-size: 10px;
-      letter-spacing: 3px;
-      text-transform: uppercase;
-      font-weight: 400;
-      opacity: 0.7;
-      transition: opacity 0.3s;
-    }
-    .nav-links a:hover { opacity: 1; color: var(--gold); }
+    .nav-item.active,.nav-item:hover{color:var(--gold);}
+    .nav-icon{font-size:20px;}
 
-    /* HERO */
-    .hero {
-      min-height: 100vh;
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      align-items: center;
-      text-align: center;
-      padding: 120px 60px 80px;
-      position: relative;
-      overflow: hidden;
-    }
-    .hero::before {
-      content: '';
-      position: absolute; inset:0;
-      background: radial-gradient(ellipse at 50% 60%, rgba(184,150,46,0.08) 0%, transparent 65%);
-    }
-    .hero-eyebrow {
-      font-size: 10px;
-      letter-spacing: 6px;
-      color: var(--gold);
-      text-transform: uppercase;
-      font-weight: 400;
-      margin-bottom: 28px;
-    }
-    .hero-title {
-      font-family: 'Cormorant Garamond', serif;
-      font-size: 88px;
-      font-weight: 300;
-      letter-spacing: 20px;
-      color: var(--cream);
-      line-height: 1;
-      margin-bottom: 30px;
-      text-transform: uppercase;
-    }
-    .hero-line {
-      width: 1px;
-      height: 60px;
-      background: linear-gradient(to bottom, var(--gold), transparent);
-      margin: 0 auto 30px;
-    }
-    .hero-sub {
-      font-family: 'Cormorant Garamond', serif;
-      font-size: 18px;
-      font-style: italic;
-      color: rgba(245,237,216,0.6);
-      max-width: 480px;
-      line-height: 1.8;
-      margin-bottom: 60px;
-    }
-    .hero-actions { display:flex; gap:20px; justify-content:center; }
-    .btn-primary {
-      background: var(--gold);
-      color: var(--black);
-      border: none;
-      padding: 16px 52px;
-      font-family: 'Montserrat', sans-serif;
-      font-size: 10px;
-      letter-spacing: 4px;
-      text-transform: uppercase;
-      cursor: pointer;
-      transition: background 0.3s;
-    }
-    .btn-primary:hover { background: var(--gold-light); }
-    .btn-secondary {
-      background: transparent;
-      color: var(--gold);
-      border: 1px solid rgba(184,150,46,0.5);
-      padding: 16px 52px;
-      font-family: 'Montserrat', sans-serif;
-      font-size: 10px;
-      letter-spacing: 4px;
-      text-transform: uppercase;
-      cursor: pointer;
-      transition: all 0.3s;
-    }
-    .btn-secondary:hover { border-color: var(--gold); background: rgba(184,150,46,0.05); }
+    /* ── PAGES ── */
+    .page{display:none;min-height:100vh;}
+    .page.active{display:block;}
 
-    /* SECTIONS */
-    .section { padding: 100px 60px; max-width: 1100px; margin: 0 auto; }
-    .section-eyebrow {
-      font-size: 10px; letter-spacing: 5px; color: var(--gold);
-      text-transform: uppercase; margin-bottom: 16px;
+    /* ── TOP BAR ── */
+    .topbar{
+      position:sticky;top:0;z-index:100;
+      display:flex;justify-content:space-between;align-items:center;
+      padding:20px 24px;
+      background:linear-gradient(to bottom,rgba(8,8,8,0.98),rgba(8,8,8,0.7));
+      border-bottom:1px solid rgba(184,150,46,0.1);
     }
-    .section-title {
-      font-family: 'Cormorant Garamond', serif;
-      font-size: 42px; font-weight: 300;
-      color: var(--cream); margin-bottom: 16px;
-      letter-spacing: 3px;
-    }
-    .gold-rule { width:40px; height:1px; background:var(--gold); margin:20px 0 50px; }
+    .logo-text{font-family:'Cormorant Garamond',serif;font-size:20px;letter-spacing:8px;color:var(--gold);}
+    .topbar-right{font-size:11px;color:var(--grey);letter-spacing:1px;}
 
-    /* QUIZ */
-    #quiz { text-align:center; }
-    .quiz-wrap {
-      background: rgba(245,237,216,0.03);
-      border: 1px solid rgba(184,150,46,0.2);
-      padding: 60px;
-      max-width: 580px;
-      margin: 0 auto;
+    /* ── HERO ── */
+    .hero{
+      min-height:85vh;display:flex;flex-direction:column;
+      justify-content:center;align-items:center;text-align:center;
+      padding:60px 24px 40px;
+      background:radial-gradient(ellipse at 50% 60%,rgba(184,150,46,0.07) 0%,transparent 65%);
     }
-    .quiz-step {
-      font-size: 10px; letter-spacing: 4px;
-      color: var(--gold); margin-bottom: 30px;
-    }
-    .quiz-q {
-      font-family: 'Cormorant Garamond', serif;
-      font-size: 22px; color: var(--cream);
-      margin-bottom: 36px; line-height: 1.5;
-    }
-    .quiz-opts { display:grid; grid-template-columns:1fr 1fr; gap:12px; margin-bottom:36px; }
-    .quiz-opt {
-      background: transparent;
-      border: 1px solid rgba(184,150,46,0.25);
-      color: rgba(245,237,216,0.8);
-      padding: 14px 16px;
-      font-family: 'Montserrat', sans-serif;
-      font-size: 11px; letter-spacing: 1px;
-      cursor: pointer; text-align:left;
-      transition: all 0.25s;
-    }
-    .quiz-opt:hover, .quiz-opt.sel {
-      border-color: var(--gold);
-      color: var(--gold);
-      background: rgba(184,150,46,0.06);
-    }
+    .hero-eyebrow{font-size:9px;letter-spacing:5px;color:var(--gold);text-transform:uppercase;margin-bottom:20px;}
+    .hero-title{font-family:'Cormorant Garamond',serif;font-size:64px;font-weight:300;letter-spacing:14px;color:var(--cream);line-height:1;margin-bottom:24px;text-transform:uppercase;}
+    .hero-line{width:1px;height:48px;background:linear-gradient(to bottom,var(--gold),transparent);margin:0 auto 24px;}
+    .hero-sub{font-family:'Cormorant Garamond',serif;font-size:16px;font-style:italic;color:rgba(245,237,216,0.6);max-width:380px;line-height:1.8;margin-bottom:48px;}
+    .hero-btns{display:flex;gap:14px;justify-content:center;flex-wrap:wrap;}
+    .btn-p{background:var(--gold);color:var(--black);border:none;padding:14px 40px;font-family:'Montserrat',sans-serif;font-size:9px;letter-spacing:3px;text-transform:uppercase;cursor:pointer;transition:background 0.3s;}
+    .btn-p:hover{background:var(--gold2);}
+    .btn-s{background:transparent;color:var(--gold);border:1px solid rgba(184,150,46,0.5);padding:14px 40px;font-family:'Montserrat',sans-serif;font-size:9px;letter-spacing:3px;text-transform:uppercase;cursor:pointer;transition:all 0.3s;}
+    .btn-s:hover{border-color:var(--gold);background:rgba(184,150,46,0.05);}
 
-    /* RESULT */
-    .result-wrap {
-      display:none;
-      background: rgba(184,150,46,0.06);
-      border: 1px solid var(--gold);
-      padding: 60px;
-      max-width: 580px;
-      margin: 0 auto;
-      text-align: center;
-    }
-    .result-label { font-size:10px; letter-spacing:5px; color:var(--gold); text-transform:uppercase; margin-bottom:20px; }
-    .result-name {
-      font-family:'Cormorant Garamond', serif;
-      font-size: 32px; color:var(--cream); margin-bottom:16px;
-    }
-    .result-text {
-      font-family:'Cormorant Garamond', serif;
-      font-size:16px; font-style:italic;
-      color:rgba(245,237,216,0.65); line-height:1.8; margin-bottom:36px;
-    }
-    .result-bean-label { font-size:10px; letter-spacing:3px; color:var(--gold); margin-bottom:10px; }
-    .result-bean-name {
-      font-family:'Cormorant Garamond', serif;
-      font-size:20px; color:var(--cream); margin-bottom:36px;
-    }
+    /* ── SECTION HEADER ── */
+    .sec-head{padding:48px 24px 32px;}
+    .sec-eye{font-size:9px;letter-spacing:5px;color:var(--gold);text-transform:uppercase;margin-bottom:12px;}
+    .sec-title{font-family:'Cormorant Garamond',serif;font-size:32px;font-weight:300;color:var(--cream);letter-spacing:2px;}
+    .gold-rule{width:36px;height:1px;background:var(--gold);margin:16px 0 0;}
 
-    /* BEANS */
-    .beans-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:1px; background:rgba(184,150,46,0.15); }
-    .bean-card {
-      background: var(--black);
-      padding: 40px 36px;
-      transition: background 0.3s;
-      position:relative;
-    }
-    .bean-card:hover { background: rgba(184,150,46,0.04); }
-    .bean-badge {
-      font-size:9px; letter-spacing:3px;
-      color:var(--black); background:var(--gold);
-      padding:4px 10px; text-transform:uppercase;
-      display:inline-block; margin-bottom:16px;
-    }
-    .bean-country { font-size:10px; letter-spacing:3px; color:var(--gold); text-transform:uppercase; margin-bottom:12px; }
-    .bean-name {
-      font-family:'Cormorant Garamond', serif;
-      font-size:24px; color:var(--cream); margin-bottom:12px;
-    }
-    .bean-tasting {
-      font-family:'Cormorant Garamond', serif;
-      font-size:14px; font-style:italic;
-      color:rgba(245,237,216,0.5); line-height:1.7; margin-bottom:28px;
-    }
-    .roast-row { margin:20px 0; }
-    .roast-label { font-size:9px; letter-spacing:3px; color:rgba(245,237,216,0.4); text-transform:uppercase; margin-bottom:8px; }
-    input[type=range] { width:100%; accent-color:var(--gold); cursor:pointer; }
-    .roast-val { font-size:10px; letter-spacing:2px; color:var(--gold); margin-top:6px; }
-    .roast-scale { display:flex; justify-content:space-between; font-size:9px; color:rgba(245,237,216,0.3); letter-spacing:1px; }
-    .bean-price {
-      font-family:'Cormorant Garamond', serif;
-      font-size:26px; color:var(--gold); margin:20px 0;
-    }
-    .bean-price span { font-size:13px; color:rgba(245,237,216,0.4); font-family:'Montserrat', sans-serif; }
+    /* ── QUIZ ── */
+    .quiz-wrap{margin:0 24px 32px;border:1px solid rgba(184,150,46,0.2);padding:40px 28px;}
+    .quiz-step{font-size:9px;letter-spacing:4px;color:var(--gold);margin-bottom:20px;}
+    .quiz-q{font-family:'Cormorant Garamond',serif;font-size:20px;color:var(--cream);margin-bottom:28px;line-height:1.5;}
+    .quiz-opts{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:28px;}
+    .quiz-opt{background:transparent;border:1px solid rgba(184,150,46,0.25);color:rgba(245,237,216,0.8);padding:12px 14px;font-family:'Montserrat',sans-serif;font-size:10px;letter-spacing:1px;cursor:pointer;text-align:left;transition:all 0.25s;}
+    .quiz-opt:hover,.quiz-opt.sel{border-color:var(--gold);color:var(--gold);background:rgba(184,150,46,0.06);}
+    .result-wrap{display:none;margin:0 24px 32px;background:rgba(184,150,46,0.06);border:1px solid var(--gold);padding:40px 28px;text-align:center;}
+    .result-label{font-size:9px;letter-spacing:5px;color:var(--gold);text-transform:uppercase;margin-bottom:16px;}
+    .result-name{font-family:'Cormorant Garamond',serif;font-size:28px;color:var(--cream);margin-bottom:12px;}
+    .result-text{font-family:'Cormorant Garamond',serif;font-size:14px;font-style:italic;color:rgba(245,237,216,0.65);line-height:1.8;margin-bottom:28px;}
+    .result-bean-label{font-size:9px;letter-spacing:3px;color:var(--gold);margin-bottom:8px;}
+    .result-bean{font-family:'Cormorant Garamond',serif;font-size:18px;color:var(--cream);margin-bottom:28px;}
 
-    /* SUBSCRIPTION */
-    .sub-grid { display:grid; grid-template-columns:1fr 1fr; gap:1px; background:rgba(184,150,46,0.15); }
-    .sub-card { background:var(--black); padding:56px 48px; }
-    .sub-card.hero-card { background:rgba(184,150,46,0.05); }
-    .sub-tier { font-size:9px; letter-spacing:5px; color:var(--gold); text-transform:uppercase; margin-bottom:20px; }
-    .sub-name {
-      font-family:'Cormorant Garamond', serif;
-      font-size:32px; color:var(--cream); margin-bottom:10px;
-    }
-    .sub-price {
-      font-family:'Cormorant Garamond', serif;
-      font-size:48px; color:var(--gold); margin-bottom:36px;
-    }
-    .sub-price span { font-size:14px; color:var(--grey); font-family:'Montserrat',sans-serif; }
-    .sub-list { list-style:none; margin-bottom:40px; }
-    .sub-list li {
-      font-size:11px; letter-spacing:1px; color:rgba(245,237,216,0.65);
-      padding:12px 0; border-bottom:1px solid rgba(245,237,216,0.07);
-    }
-    .sub-list li::before { content:"— "; color:var(--gold); }
+    /* ── RADAR CHART ── */
+    .radar-wrap{margin:0 24px 32px;border:1px solid rgba(184,150,46,0.15);padding:32px 24px;text-align:center;}
+    .radar-title{font-size:9px;letter-spacing:4px;color:var(--gold);text-transform:uppercase;margin-bottom:20px;}
+    canvas#radar{max-width:280px;}
 
-    /* FOOTER */
-    footer {
-      border-top: 1px solid rgba(184,150,46,0.15);
-      text-align:center; padding:50px;
-      font-size:9px; letter-spacing:4px;
-      color:rgba(245,237,216,0.2); text-transform:uppercase;
-    }
+    /* ── BEANS ── */
+    .beans-list{display:flex;flex-direction:column;gap:1px;background:rgba(184,150,46,0.1);margin-bottom:24px;}
+    .bean-card{background:var(--black);padding:28px 24px;transition:background 0.3s;}
+    .bean-card:active{background:rgba(184,150,46,0.04);}
+    .bean-badge{font-size:8px;letter-spacing:3px;color:var(--black);background:var(--gold);padding:3px 8px;text-transform:uppercase;display:inline-block;margin-bottom:12px;}
+    .bean-country{font-size:9px;letter-spacing:3px;color:var(--gold);text-transform:uppercase;margin-bottom:10px;}
+    .bean-name{font-family:'Cormorant Garamond',serif;font-size:22px;color:var(--cream);margin-bottom:8px;}
+    .bean-tasting{font-family:'Cormorant Garamond',serif;font-size:13px;font-style:italic;color:rgba(245,237,216,0.5);line-height:1.6;margin-bottom:20px;}
+    .roast-label{font-size:8px;letter-spacing:3px;color:rgba(245,237,216,0.4);text-transform:uppercase;margin-bottom:6px;}
+    input[type=range]{width:100%;accent-color:var(--gold);cursor:pointer;margin-bottom:4px;}
+    .roast-scale{display:flex;justify-content:space-between;font-size:8px;color:rgba(245,237,216,0.3);letter-spacing:1px;margin-bottom:4px;}
+    .roast-val{font-size:9px;letter-spacing:2px;color:var(--gold);margin-bottom:16px;}
+    .bean-price{font-family:'Cormorant Garamond',serif;font-size:24px;color:var(--gold);margin-bottom:16px;}
+    .bean-price span{font-size:12px;color:var(--grey);font-family:'Montserrat',sans-serif;}
 
-    /* TOAST */
-    .toast {
-      position:fixed; bottom:36px; right:36px;
-      background:var(--gold); color:var(--black);
-      padding:16px 28px; font-size:10px; letter-spacing:2px;
-      text-transform:uppercase; display:none; z-index:999;
-    }
+    /* ── WORLD MAP ── */
+    .map-wrap{margin:0 24px 32px;border:1px solid rgba(184,150,46,0.15);padding:24px;position:relative;overflow:hidden;}
+    .map-svg{width:100%;height:auto;opacity:0.15;}
+    .map-pins{position:absolute;top:0;left:0;width:100%;height:100%;}
+    .pin{position:absolute;transform:translate(-50%,-50%);cursor:pointer;}
+    .pin-dot{width:10px;height:10px;background:var(--gold);border-radius:50%;animation:pulse 2s infinite;}
+    .pin-label{position:absolute;top:14px;left:50%;transform:translateX(-50%);font-size:8px;letter-spacing:1px;color:var(--gold);white-space:nowrap;background:rgba(8,8,8,0.85);padding:2px 6px;}
+    @keyframes pulse{0%,100%{box-shadow:0 0 0 0 rgba(184,150,46,0.4);}50%{box-shadow:0 0 0 8px rgba(184,150,46,0);}}
+    .map-info{margin-top:20px;padding:16px;background:rgba(184,150,46,0.05);border-left:2px solid var(--gold);font-size:11px;color:rgba(245,237,216,0.7);line-height:1.7;display:none;}
+    .map-info.show{display:block;}
 
-    @media(max-width:768px) {
-      .hero-title { font-size:48px; letter-spacing:10px; }
-      nav { padding:20px 24px; }
-      .section { padding:60px 24px; }
-      .beans-grid, .sub-grid { grid-template-columns:1fr; }
-      .quiz-opts { grid-template-columns:1fr; }
-      .hero-actions { flex-direction:column; align-items:center; }
+    /* ── CART ── */
+    .cart-empty{text-align:center;padding:60px 24px;}
+    .cart-empty-icon{font-size:48px;margin-bottom:20px;}
+    .cart-empty-text{font-family:'Cormorant Garamond',serif;font-size:18px;font-style:italic;color:rgba(245,237,216,0.4);}
+    .cart-item{display:flex;justify-content:space-between;align-items:center;padding:20px 24px;border-bottom:1px solid rgba(184,150,46,0.1);}
+    .cart-item-info{}
+    .cart-item-name{font-family:'Cormorant Garamond',serif;font-size:16px;color:var(--cream);margin-bottom:4px;}
+    .cart-item-detail{font-size:9px;letter-spacing:1px;color:var(--grey);}
+    .cart-item-price{font-family:'Cormorant Garamond',serif;font-size:18px;color:var(--gold);}
+    .cart-item-remove{background:none;border:none;color:var(--grey);cursor:pointer;font-size:16px;margin-left:12px;}
+    .cart-summary{padding:24px;border-top:1px solid rgba(184,150,46,0.2);margin-top:8px;}
+    .cart-total{display:flex;justify-content:space-between;margin-bottom:24px;}
+    .cart-total-label{font-size:10px;letter-spacing:3px;color:var(--grey);text-transform:uppercase;}
+    .cart-total-price{font-family:'Cormorant Garamond',serif;font-size:24px;color:var(--gold);}
+
+    /* ── PROFILE ── */
+    .profile-hero{text-align:center;padding:48px 24px 32px;}
+    .profile-avatar{width:80px;height:80px;border-radius:50%;background:rgba(184,150,46,0.15);border:1px solid rgba(184,150,46,0.4);display:flex;align-items:center;justify-content:center;font-size:32px;margin:0 auto 16px;}
+    .profile-name{font-family:'Cormorant Garamond',serif;font-size:24px;color:var(--cream);margin-bottom:4px;}
+    .profile-tag{font-size:9px;letter-spacing:3px;color:var(--gold);}
+    .profile-section{margin:0 24px 24px;border:1px solid rgba(184,150,46,0.15);}
+    .profile-section-title{font-size:9px;letter-spacing:4px;color:var(--gold);text-transform:uppercase;padding:16px 20px;border-bottom:1px solid rgba(184,150,46,0.1);}
+    .profile-row{display:flex;justify-content:space-between;align-items:center;padding:14px 20px;border-bottom:1px solid rgba(184,150,46,0.07);}
+    .profile-row:last-child{border-bottom:none;}
+    .profile-row-label{font-size:10px;color:var(--grey);letter-spacing:1px;}
+    .profile-row-val{font-size:11px;color:var(--cream);text-align:right;}
+    .order-item{padding:16px 20px;border-bottom:1px solid rgba(184,150,46,0.07);}
+    .order-item:last-child{border-bottom:none;}
+    .order-header{display:flex;justify-content:space-between;margin-bottom:4px;}
+    .order-name{font-family:'Cormorant Garamond',serif;font-size:14px;color:var(--cream);}
+    .order-price{font-size:11px;color:var(--gold);}
+    .order-detail{font-size:9px;color:var(--grey);letter-spacing:1px;}
+
+    /* ── RESERVE ── */
+    .reserve-hero{background:radial-gradient(ellipse at 50%,rgba(184,150,46,0.08),transparent 70%);text-align:center;padding:48px 24px 32px;}
+    .sub-cards{margin:0 24px;display:flex;flex-direction:column;gap:1px;background:rgba(184,150,46,0.1);}
+    .sub-card{background:var(--black);padding:36px 28px;}
+    .sub-card.featured{background:rgba(184,150,46,0.04);}
+    .sub-tier{font-size:8px;letter-spacing:5px;color:var(--gold);text-transform:uppercase;margin-bottom:16px;}
+    .sub-name{font-family:'Cormorant Garamond',serif;font-size:26px;color:var(--cream);margin-bottom:8px;}
+    .sub-price{font-family:'Cormorant Garamond',serif;font-size:40px;color:var(--gold);margin-bottom:24px;}
+    .sub-price span{font-size:13px;color:var(--grey);font-family:'Montserrat',sans-serif;}
+    .sub-list{list-style:none;margin-bottom:32px;}
+    .sub-list li{font-size:10px;letter-spacing:1px;color:rgba(245,237,216,0.65);padding:10px 0;border-bottom:1px solid rgba(245,237,216,0.06);}
+    .sub-list li::before{content:"— ";color:var(--gold);}
+
+    /* ── TOAST ── */
+    .toast{position:fixed;bottom:88px;left:50%;transform:translateX(-50%);background:var(--gold);color:var(--black);padding:12px 24px;font-size:10px;letter-spacing:2px;text-transform:uppercase;display:none;z-index:999;white-space:nowrap;}
+
+    /* ── LANG SWITCHER ── */
+    .lang-sw{display:flex;gap:8px;justify-content:center;padding:12px;}
+    .lang-btn{background:none;border:1px solid rgba(184,150,46,0.3);color:var(--grey);padding:4px 12px;font-size:9px;letter-spacing:2px;cursor:pointer;transition:all 0.2s;}
+    .lang-btn.active,.lang-btn:hover{border-color:var(--gold);color:var(--gold);}
+
+    @media(min-width:640px){
+      .hero-title{font-size:88px;}
+      .quiz-opts{grid-template-columns:1fr 1fr;}
+      .beans-list{display:grid;grid-template-columns:repeat(3,1fr);}
+      .sub-cards{flex-direction:row;}
     }
   </style>
 </head>
 <body>
 
-<nav>
-  <div class="nav-logo-text">ORIGEM</div>
-  <div class="nav-links">
-    <a href="#quiz">Profil</a>
-    <a href="#beans">Bohnen</a>
-    <a href="#reserve">Reserve</a>
+<!-- ══ PAGE: HOME ══ -->
+<div class="page active" id="page-home">
+  <div class="topbar">
+    <div class="logo-text">ORIGEM</div>
+    <div class="lang-sw">
+      <button class="lang-btn active" onclick="setLang('de',this)">DE</button>
+      <button class="lang-btn" onclick="setLang('en',this)">EN</button>
+      <button class="lang-btn" onclick="setLang('fr',this)">FR</button>
+    </div>
   </div>
-</nav>
-
-<!-- HERO -->
-<div class="hero">
-  <div class="hero-eyebrow">Hyper-personalisierter Premium Kaffee</div>
-  <div class="hero-title">Origem</div>
-  <div class="hero-line"></div>
-  <div class="hero-sub">Jede Bohne hat eine Geschichte.<br>Jede Röstung ist deine.</div>
-  <div class="hero-actions">
-    <button class="btn-primary" onclick="document.getElementById('quiz').scrollIntoView({behavior:'smooth'})">Profil erstellen</button>
-    <button class="btn-secondary" onclick="document.getElementById('beans').scrollIntoView({behavior:'smooth'})">Kollektion entdecken</button>
+  <div class="hero">
+    <div class="hero-eyebrow" data-i18n="eyebrow">Hyper-personalisierter Premium Kaffee</div>
+    <div class="hero-title">ORIGEM</div>
+    <div class="hero-line"></div>
+    <div class="hero-sub" data-i18n="tagline">Jede Bohne hat eine Geschichte.<br>Jede Röstung ist deine.</div>
+    <div class="hero-btns">
+      <button class="btn-p" onclick="goTo('page-quiz')" data-i18n="cta1">Profil erstellen</button>
+      <button class="btn-s" onclick="goTo('page-beans')" data-i18n="cta2">Kollektion</button>
+    </div>
   </div>
 </div>
 
-<!-- QUIZ -->
-<div id="quiz" style="background:rgba(245,237,216,0.01); padding:100px 60px;">
-  <div style="text-align:center; margin-bottom:60px;">
-    <div class="section-eyebrow">Schritt I</div>
-    <div class="section-title">Dein Geschmacksprofil</div>
-    <div class="gold-rule" style="margin:20px auto 0;"></div>
+<!-- ══ PAGE: QUIZ ══ -->
+<div class="page" id="page-quiz">
+  <div class="topbar"><div class="logo-text">ORIGEM</div><div class="topbar-right" data-i18n="quiz-title">Geschmacksprofil</div></div>
+  <div class="sec-head">
+    <div class="sec-eye">I</div>
+    <div class="sec-title" data-i18n="quiz-title">Dein Geschmacksprofil</div>
+    <div class="gold-rule"></div>
   </div>
 
   <div class="quiz-wrap" id="quiz-box">
     <div class="quiz-step" id="qstep">I / IV</div>
     <div class="quiz-q" id="qtext"></div>
     <div class="quiz-opts" id="qopts"></div>
-    <button class="btn-primary" onclick="nextQ()" style="width:100%;">Weiter</button>
+    <button class="btn-p" onclick="nextQ()" style="width:100%;" data-i18n="next">Weiter</button>
   </div>
 
   <div class="result-wrap" id="result-box">
-    <div class="result-label">Ihr Profil</div>
+    <div class="result-label" data-i18n="your-profile">Ihr Profil</div>
     <div class="result-name" id="r-name"></div>
     <div class="result-text" id="r-text"></div>
-    <div class="result-bean-label">Empfohlene Selektion</div>
-    <div class="result-bean-name" id="r-bean"></div>
-    <button class="btn-primary" onclick="showToast('Bestellung aufgegeben — wird frisch geröstet')">Jetzt bestellen</button>
+    <div class="result-bean-label" data-i18n="recommended">Empfohlene Selektion</div>
+    <div class="result-bean" id="r-bean"></div>
+
+    <!-- Radar chart -->
+    <div class="radar-wrap" style="margin:0 0 28px;">
+      <div class="radar-title" data-i18n="taste-profile">Geschmacksprofil</div>
+      <canvas id="radar" width="260" height="260"></canvas>
+    </div>
+
+    <button class="btn-p" style="width:100%;" onclick="addToCart('Empfohlene Selektion','CHF 48',document.getElementById('r-bean').textContent,'Medium Roast');showToast(i18n[lang].added)" data-i18n="order-now">Jetzt bestellen</button>
   </div>
 </div>
 
-<!-- BEANS -->
-<section class="section" id="beans">
-  <div class="section-eyebrow">Single Origin</div>
-  <div class="section-title">Die Kollektion</div>
-  <div class="gold-rule"></div>
-</section>
-
-<div class="beans-grid" style="max-width:1100px; margin:0 auto 100px;">
-  <div class="bean-card">
-    <div class="bean-country">🇪🇹 Äthiopien · Yirgacheffe</div>
-    <div class="bean-name">Halo Beriti</div>
-    <div class="bean-tasting">Jasmin · Bergamotte · Reife Pfirsich</div>
-    <div class="roast-row">
-      <div class="roast-label">Röstgrad</div>
-      <input type="range" min="1" max="3" value="1" oninput="setRoast(this,'r1')">
-      <div class="roast-scale"><span>Light</span><span>Medium</span><span>Dark</span></div>
-      <div class="roast-val" id="r1">Light Roast</div>
-    </div>
-    <div class="bean-price">CHF 48 <span>/ 200g</span></div>
-    <button class="btn-secondary" style="width:100%;" onclick="showToast('Halo Beriti hinzugefügt')">Auswählen</button>
-  </div>
-
-  <div class="bean-card" style="border:1px solid rgba(184,150,46,0.4);">
-    <div class="bean-badge">Rarität</div>
-    <div class="bean-country">🇾🇪 Yemen · Haraz</div>
-    <div class="bean-name">Al Hamdani</div>
-    <div class="bean-tasting">Dunkle Schokolade · Wein · Tabak</div>
-    <div class="roast-row">
-      <div class="roast-label">Röstgrad</div>
-      <input type="range" min="1" max="3" value="2" oninput="setRoast(this,'r2')">
-      <div class="roast-scale"><span>Light</span><span>Medium</span><span>Dark</span></div>
-      <div class="roast-val" id="r2">Medium Roast</div>
-    </div>
-    <div class="bean-price">CHF 78 <span>/ 200g</span></div>
-    <button class="btn-primary" style="width:100%;" onclick="showToast('Al Hamdani hinzugefügt')">Auswählen</button>
-  </div>
-
-  <div class="bean-card">
-    <div class="bean-country">🇨🇴 Kolumbien · Huila</div>
-    <div class="bean-name">Finca La Palma</div>
-    <div class="bean-tasting">Karamell · Rote Früchte · Sanfte Säure</div>
-    <div class="roast-row">
-      <div class="roast-label">Röstgrad</div>
-      <input type="range" min="1" max="3" value="2" oninput="setRoast(this,'r3')">
-      <div class="roast-scale"><span>Light</span><span>Medium</span><span>Dark</span></div>
-      <div class="roast-val" id="r3">Medium Roast</div>
-    </div>
-    <div class="bean-price">CHF 42 <span>/ 200g</span></div>
-    <button class="btn-secondary" style="width:100%;" onclick="showToast('Finca La Palma hinzugefügt')">Auswählen</button>
-  </div>
-</div>
-
-<!-- RESERVE -->
-<div id="reserve" style="padding:100px 60px; background:rgba(245,237,216,0.01);">
-  <div style="max-width:1100px; margin:0 auto;">
-    <div class="section-eyebrow">Exklusiv</div>
-    <div class="section-title">The Reserve</div>
+<!-- ══ PAGE: BEANS ══ -->
+<div class="page" id="page-beans">
+  <div class="topbar"><div class="logo-text">ORIGEM</div><div class="topbar-right" data-i18n="collection">Kollektion</div></div>
+  <div class="sec-head">
+    <div class="sec-eye" data-i18n="single-origin">Single Origin</div>
+    <div class="sec-title" data-i18n="our-beans">Unsere Bohnen</div>
     <div class="gold-rule"></div>
-    <div class="sub-grid">
-      <div class="sub-card">
-        <div class="sub-tier">Einzelbestellung</div>
-        <div class="sub-name">À la carte</div>
-        <div class="sub-price">ab CHF 35 <span>/ Beutel</span></div>
-        <ul class="sub-list">
-          <li>Frisch geröstet auf Bestellung</li>
-          <li>Mahlgrad nach Maschine</li>
-          <li>Herkunfts-Story inklusive</li>
-          <li>Lieferung in 48 Stunden</li>
-        </ul>
-        <button class="btn-secondary" style="width:100%;" onclick="showToast('Bestellung gestartet')">Bestellen</button>
+  </div>
+
+  <!-- World Map -->
+  <div style="padding:0 24px 24px;">
+    <div style="font-size:9px;letter-spacing:4px;color:var(--gold);text-transform:uppercase;margin-bottom:12px;" data-i18n="origin-map">Herkunftskarte</div>
+    <div class="map-wrap" id="map-wrap">
+      <!-- Simplified world map SVG -->
+      <svg class="map-svg" viewBox="0 0 800 400" xmlns="http://www.w3.org/2000/svg">
+        <rect width="800" height="400" fill="none"/>
+        <!-- Simplified continents -->
+        <path d="M70,120 Q100,90 150,100 Q200,110 220,140 Q230,170 210,190 Q180,210 150,200 Q110,190 80,170 Z" fill="var(--cream)" opacity="0.3"/>
+        <path d="M240,100 Q320,80 420,90 Q500,100 540,130 Q560,160 540,200 Q510,240 460,250 Q380,260 320,240 Q260,220 240,180 Q220,150 240,100 Z" fill="var(--cream)" opacity="0.3"/>
+        <path d="M280,260 Q320,250 360,260 Q380,280 370,320 Q350,360 310,360 Q280,360 265,330 Q255,300 280,260 Z" fill="var(--cream)" opacity="0.3"/>
+        <path d="M550,80 Q600,60 680,70 Q740,80 760,120 Q770,160 740,190 Q700,220 640,210 Q580,200 555,170 Q535,140 550,80 Z" fill="var(--cream)" opacity="0.3"/>
+        <path d="M590,220 Q630,210 680,220 Q720,240 720,280 Q710,320 670,340 Q630,350 600,330 Q570,310 575,270 Q580,240 590,220 Z" fill="var(--cream)" opacity="0.3"/>
+      </svg>
+      <!-- Pins overlay -->
+      <div class="map-pins">
+        <div class="pin" style="left:54%;top:52%;" onclick="showMapInfo('ethiopia')">
+          <div class="pin-dot"></div>
+          <div class="pin-label">🇪🇹 Äthiopien</div>
+        </div>
+        <div class="pin" style="left:57%;top:45%;" onclick="showMapInfo('yemen')">
+          <div class="pin-dot" style="background:var(--gold2);"></div>
+          <div class="pin-label">🇾🇪 Yemen</div>
+        </div>
+        <div class="pin" style="left:33%;top:62%;" onclick="showMapInfo('colombia')">
+          <div class="pin-dot"></div>
+          <div class="pin-label">🇨🇴 Kolumbien</div>
+        </div>
       </div>
-      <div class="sub-card hero-card">
-        <div class="sub-tier">Monatlich · KI-kuratiert</div>
-        <div class="sub-name">The Reserve</div>
-        <div class="sub-price">CHF 120 <span>/ Monat</span></div>
-        <ul class="sub-list">
-          <li>Monatliche Rarität — KI wählt für dich</li>
-          <li>Limited Editions & Micro-Lots</li>
-          <li>Auction Coffees weltweit</li>
-          <li>Frisch geröstet, 48h Lieferung</li>
-          <li>Persönliche Tasting-Notes</li>
-        </ul>
-        <button class="btn-primary" style="width:100%;" onclick="showToast('Willkommen bei The Reserve')">Reserve abonnieren</button>
-      </div>
+      <div class="map-info" id="map-info"></div>
+    </div>
+  </div>
+
+  <div class="beans-list">
+    <!-- Bean 1 -->
+    <div class="bean-card">
+      <div class="bean-country">🇪🇹 Äthiopien · Yirgacheffe</div>
+      <div class="bean-name">Halo Beriti</div>
+      <div class="bean-tasting">Jasmin · Bergamotte · Reife Pfirsich</div>
+      <div class="roast-label" data-i18n="roast-degree">Röstgrad</div>
+      <input type="range" min="1" max="3" value="1" oninput="setRoast(this,'rv1')">
+      <div class="roast-scale"><span>Light</span><span>Medium</span><span>Dark</span></div>
+      <div class="roast-val" id="rv1">Light Roast</div>
+      <div class="bean-price">CHF 48 <span>/ 200g</span></div>
+      <button class="btn-s" style="width:100%;" onclick="addToCart('Halo Beriti','CHF 48','Äthiopien · Yirgacheffe',document.getElementById(\'rv1\').textContent);showToast(i18n[lang].added)" data-i18n="select">Auswählen</button>
+    </div>
+    <!-- Bean 2 -->
+    <div class="bean-card" style="border:1px solid rgba(184,150,46,0.35);">
+      <div class="bean-badge" data-i18n="rarity">Rarität</div>
+      <div class="bean-country">🇾🇪 Yemen · Haraz</div>
+      <div class="bean-name">Al Hamdani</div>
+      <div class="bean-tasting">Dunkle Schokolade · Wein · Tabak</div>
+      <div class="roast-label" data-i18n="roast-degree">Röstgrad</div>
+      <input type="range" min="1" max="3" value="2" oninput="setRoast(this,'rv2')">
+      <div class="roast-scale"><span>Light</span><span>Medium</span><span>Dark</span></div>
+      <div class="roast-val" id="rv2">Medium Roast</div>
+      <div class="bean-price">CHF 78 <span>/ 200g</span></div>
+      <button class="btn-p" style="width:100%;" onclick="addToCart('Al Hamdani','CHF 78','Yemen · Haraz',document.getElementById(\'rv2\').textContent);showToast(i18n[lang].added)" data-i18n="select">Auswählen</button>
+    </div>
+    <!-- Bean 3 -->
+    <div class="bean-card">
+      <div class="bean-country">🇨🇴 Kolumbien · Huila</div>
+      <div class="bean-name">Finca La Palma</div>
+      <div class="bean-tasting">Karamell · Rote Früchte · Sanfte Säure</div>
+      <div class="roast-label" data-i18n="roast-degree">Röstgrad</div>
+      <input type="range" min="1" max="3" value="2" oninput="setRoast(this,'rv3')">
+      <div class="roast-scale"><span>Light</span><span>Medium</span><span>Dark</span></div>
+      <div class="roast-val" id="rv3">Medium Roast</div>
+      <div class="bean-price">CHF 42 <span>/ 200g</span></div>
+      <button class="btn-s" style="width:100%;" onclick="addToCart('Finca La Palma','CHF 42','Kolumbien · Huila',document.getElementById(\'rv3\').textContent);showToast(i18n[lang].added)" data-i18n="select">Auswählen</button>
     </div>
   </div>
 </div>
 
-<footer>
-  <div style="margin-bottom:16px; font-family:'Cormorant Garamond',serif; font-size:18px; letter-spacing:10px; color:rgba(184,150,46,0.4);">ORIGEM</div>
-  Hyper-personalisierter Premium Kaffee · © 2026
-</footer>
+<!-- ══ PAGE: CART ══ -->
+<div class="page" id="page-cart">
+  <div class="topbar"><div class="logo-text">ORIGEM</div><div class="topbar-right" id="cart-badge">0 Artikel</div></div>
+  <div class="sec-head">
+    <div class="sec-eye" data-i18n="my-order">Meine Bestellung</div>
+    <div class="sec-title" data-i18n="cart">Warenkorb</div>
+    <div class="gold-rule"></div>
+  </div>
+  <div id="cart-content">
+    <div class="cart-empty">
+      <div class="cart-empty-icon">☕</div>
+      <div class="cart-empty-text" data-i18n="cart-empty">Noch leer — wähle deine Selektion</div>
+    </div>
+  </div>
+</div>
+
+<!-- ══ PAGE: RESERVE ══ -->
+<div class="page" id="page-reserve">
+  <div class="topbar"><div class="logo-text">ORIGEM</div></div>
+  <div class="reserve-hero">
+    <div class="sec-eye" data-i18n="exclusive">Exklusiv</div>
+    <div class="sec-title" data-i18n="the-reserve">The Reserve</div>
+    <div class="gold-rule" style="margin:16px auto 0;"></div>
+  </div>
+  <div class="sub-cards">
+    <div class="sub-card">
+      <div class="sub-tier" data-i18n="single-order">Einzelbestellung</div>
+      <div class="sub-name">À la carte</div>
+      <div class="sub-price">ab CHF 35 <span>/ Beutel</span></div>
+      <ul class="sub-list">
+        <li data-i18n="f1">Frisch geröstet auf Bestellung</li>
+        <li data-i18n="f2">Mahlgrad nach Maschine</li>
+        <li data-i18n="f3">Herkunfts-Story inklusive</li>
+        <li data-i18n="f4">Lieferung in 48 Stunden</li>
+      </ul>
+      <button class="btn-s" style="width:100%;" onclick="showToast(i18n[lang].ordered)" data-i18n="order">Bestellen</button>
+    </div>
+    <div class="sub-card featured">
+      <div class="sub-tier" data-i18n="monthly-ai">Monatlich · KI-kuratiert</div>
+      <div class="sub-name">The Reserve</div>
+      <div class="sub-price">CHF 120 <span>/ Monat</span></div>
+      <ul class="sub-list">
+        <li data-i18n="r1">Monatliche Rarität — KI wählt für dich</li>
+        <li data-i18n="r2">Limited Editions & Micro-Lots</li>
+        <li data-i18n="r3">Auction Coffees weltweit</li>
+        <li data-i18n="r4">Frisch geröstet, 48h Lieferung</li>
+        <li data-i18n="r5">Persönliche Tasting-Notes</li>
+      </ul>
+      <button class="btn-p" style="width:100%;" onclick="showToast(i18n[lang].welcome)" data-i18n="subscribe">Reserve abonnieren</button>
+    </div>
+  </div>
+</div>
+
+<!-- ══ PAGE: PROFILE ══ -->
+<div class="page" id="page-profile">
+  <div class="topbar"><div class="logo-text">ORIGEM</div></div>
+  <div class="profile-hero">
+    <div class="profile-avatar">☕</div>
+    <div class="profile-name">Patrick Poli</div>
+    <div class="profile-tag" data-i18n="member">RESERVE MEMBER</div>
+  </div>
+  <div class="profile-section">
+    <div class="profile-section-title" data-i18n="taste-profile">Geschmacksprofil</div>
+    <div class="profile-row"><span class="profile-row-label" data-i18n="profile-type">Typ</span><span class="profile-row-val" id="prof-type">—</span></div>
+    <div class="profile-row"><span class="profile-row-label" data-i18n="fav-origin">Lieblingsherkunft</span><span class="profile-row-val" id="prof-origin">—</span></div>
+    <div class="profile-row"><span class="profile-row-label" data-i18n="roast-pref">Röstpräferenz</span><span class="profile-row-val">Medium</span></div>
+    <div class="profile-row"><span class="profile-row-label" data-i18n="grind">Mahlgrad</span><span class="profile-row-val" data-i18n="espresso-grind">Espresso (fein)</span></div>
+  </div>
+  <div class="profile-section">
+    <div class="profile-section-title" data-i18n="order-history">Bestellhistorie</div>
+    <div id="order-history">
+      <div style="padding:20px 20px;font-size:10px;color:var(--grey);" data-i18n="no-orders">Noch keine Bestellungen</div>
+    </div>
+  </div>
+  <div class="profile-section">
+    <div class="profile-section-title" data-i18n="subscription">Abonnement</div>
+    <div class="profile-row"><span class="profile-row-label">Status</span><span class="profile-row-val" style="color:var(--gold);" data-i18n="active">Aktiv</span></div>
+    <div class="profile-row"><span class="profile-row-label" data-i18n="next-delivery">Nächste Lieferung</span><span class="profile-row-val">01. April 2026</span></div>
+    <div class="profile-row"><span class="profile-row-label" data-i18n="this-month">Dieser Monat</span><span class="profile-row-val">Al Hamdani · Yemen ✦</span></div>
+  </div>
+</div>
+
+<!-- ══ BOTTOM NAV ══ -->
+<nav class="bottom-nav">
+  <button class="nav-item active" onclick="goTo('page-home',this)">
+    <span class="nav-icon">🏠</span>
+    <span data-i18n="nav-home">Home</span>
+  </button>
+  <button class="nav-item" onclick="goTo('page-quiz',this)">
+    <span class="nav-icon">🎯</span>
+    <span data-i18n="nav-profile">Profil</span>
+  </button>
+  <button class="nav-item" onclick="goTo('page-beans',this)">
+    <span class="nav-icon">☕</span>
+    <span data-i18n="nav-beans">Bohnen</span>
+  </button>
+  <button class="nav-item" onclick="goTo('page-cart',this)" id="nav-cart">
+    <span class="nav-icon">🛒</span>
+    <span data-i18n="nav-cart">Warenkorb</span>
+  </button>
+  <button class="nav-item" onclick="goTo('page-reserve',this)">
+    <span class="nav-icon">✦</span>
+    <span data-i18n="nav-reserve">Reserve</span>
+  </button>
+  <button class="nav-item" onclick="goTo('page-profile',this)">
+    <span class="nav-icon">👤</span>
+    <span data-i18n="nav-me">Ich</span>
+  </button>
+</nav>
 
 <div class="toast" id="toast"></div>
 
 <script>
-const Qs = [
-  { q:"Wie geniessen Sie Ihren Kaffee?", opts:["☕ Espresso — pur & konzentriert","🥛 Mit Milch — rund & cremig","🫗 Filter — langsam & aromatisch","🧊 Cold Brew — kühl & modern"] },
-  { q:"Welches Geschmacksprofil zieht Sie an?", opts:["🍫 Schokolade & Nuss — tiefgründig","🌸 Blüten & Früchte — lebendig","🍯 Karamell & Süsse — sanft","🍋 Frische Säure — belebend"] },
-  { q:"Welche Herkunft fasziniert Sie?", opts:["🌍 Afrika — exotisch & komplex","🌎 Lateinamerika — klassisch & verlässlich","🌏 Yemen & Asien — selten & legendär","✨ Überrascht mich"] },
-  { q:"Was ist Ihnen am wichtigsten?", opts:["🎯 Konstante Qualität","✦ Rarität & Einzigartigkeit","📖 Herkunft & Geschichte","🤖 KI-Empfehlung"] }
-];
-const profiles = [
-  { name:"Der Connaisseur", text:"Sie wissen genau, was Sie wollen. Kein Kompromiss, kein Zufall — nur die unmissverständliche Überzeugung, dass Qualität ihren Preis hat.", bean:"Al Hamdani · Yemen Haraz" },
-  { name:"Der Entdecker", text:"Jede Tasse ist eine Reise. Sie suchen das Unbekannte, die überraschende Note, den Moment des Staunens.", bean:"Halo Beriti · Äthiopien Yirgacheffe" },
-  { name:"Der Geniesser", text:"Balance und Eleganz. Ein Kaffee der begleitet, nicht herausfordert. Vertraut, aber nie gewöhnlich.", bean:"Finca La Palma · Kolumbien Huila" },
-];
-let cur=0, ans=[];
+// ── i18n ──
+const i18n = {
+  de: {
+    eyebrow:'Hyper-personalisierter Premium Kaffee',
+    tagline:'Jede Bohne hat eine Geschichte.<br>Jede Röstung ist deine.',
+    cta1:'Profil erstellen',cta2:'Kollektion',
+    'quiz-title':'Dein Geschmacksprofil','single-origin':'Single Origin',
+    'our-beans':'Unsere Bohnen','origin-map':'Herkunftskarte',
+    'roast-degree':'Röstgrad',select:'Auswählen',rarity:'Rarität',
+    'my-order':'Meine Bestellung',cart:'Warenkorb',
+    'cart-empty':'Noch leer — wähle deine Selektion',
+    exclusive:'Exklusiv','the-reserve':'The Reserve',
+    'single-order':'Einzelbestellung',
+    f1:'Frisch geröstet auf Bestellung',f2:'Mahlgrad nach Maschine',
+    f3:'Herkunfts-Story inklusive',f4:'Lieferung in 48 Stunden',
+    order:'Bestellen','monthly-ai':'Monatlich · KI-kuratiert',
+    r1:'Monatliche Rarität — KI wählt für dich',r2:'Limited Editions & Micro-Lots',
+    r3:'Auction Coffees weltweit',r4:'Frisch geröstet, 48h Lieferung',
+    r5:'Persönliche Tasting-Notes',subscribe:'Reserve abonnieren',
+    member:'RESERVE MEMBER','taste-profile':'Geschmacksprofil',
+    'profile-type':'Typ','fav-origin':'Lieblingsherkunft',
+    'roast-pref':'Röstpräferenz',grind:'Mahlgrad',
+    'espresso-grind':'Espresso (fein)','order-history':'Bestellhistorie',
+    'no-orders':'Noch keine Bestellungen',subscription:'Abonnement',
+    active:'Aktiv','next-delivery':'Nächste Lieferung',
+    'this-month':'Dieser Monat',
+    'nav-home':'Home','nav-profile':'Profil','nav-beans':'Bohnen',
+    'nav-cart':'Warenkorb','nav-reserve':'Reserve','nav-me':'Ich',
+    next:'Weiter','your-profile':'Ihr Profil',recommended:'Empfohlene Selektion',
+    'order-now':'Jetzt bestellen',added:'Zum Warenkorb hinzugefügt',
+    ordered:'Bestellung aufgegeben!',welcome:'Willkommen bei The Reserve!',
+    collection:'Kollektion'
+  },
+  en: {
+    eyebrow:'Hyper-personalised Premium Coffee',
+    tagline:'Every bean has a story.<br>Every roast is yours.',
+    cta1:'Create Profile',cta2:'Collection',
+    'quiz-title':'Your Taste Profile','single-origin':'Single Origin',
+    'our-beans':'Our Beans','origin-map':'Origin Map',
+    'roast-degree':'Roast Level',select:'Select',rarity:'Rarity',
+    'my-order':'My Order',cart:'Cart',
+    'cart-empty':'Still empty — choose your selection',
+    exclusive:'Exclusive','the-reserve':'The Reserve',
+    'single-order':'Single Order',
+    f1:'Freshly roasted to order',f2:'Grind size for your machine',
+    f3:'Origin story included',f4:'Delivery in 48 hours',
+    order:'Order','monthly-ai':'Monthly · AI-curated',
+    r1:'Monthly rarity — AI chooses for you',r2:'Limited Editions & Micro-Lots',
+    r3:'Auction coffees worldwide',r4:'Fresh roasted, 48h delivery',
+    r5:'Personal tasting notes',subscribe:'Subscribe to Reserve',
+    member:'RESERVE MEMBER','taste-profile':'Taste Profile',
+    'profile-type':'Type','fav-origin':'Favourite Origin',
+    'roast-pref':'Roast Preference',grind:'Grind',
+    'espresso-grind':'Espresso (fine)','order-history':'Order History',
+    'no-orders':'No orders yet',subscription:'Subscription',
+    active:'Active','next-delivery':'Next Delivery',
+    'this-month':'This Month',
+    'nav-home':'Home','nav-profile':'Profile','nav-beans':'Beans',
+    'nav-cart':'Cart','nav-reserve':'Reserve','nav-me':'Me',
+    next:'Next','your-profile':'Your Profile',recommended:'Recommended Selection',
+    'order-now':'Order Now',added:'Added to cart',
+    ordered:'Order placed!',welcome:'Welcome to The Reserve!',
+    collection:'Collection'
+  },
+  fr: {
+    eyebrow:'Café Premium Hyper-Personnalisé',
+    tagline:'Chaque grain a une histoire.<br>Chaque torréfaction est la tienne.',
+    cta1:'Créer Profil',cta2:'Collection',
+    'quiz-title':'Votre Profil Gustatif','single-origin':'Single Origin',
+    'our-beans':'Nos Grains','origin-map':'Carte des Origines',
+    'roast-degree':'Torréfaction',select:'Choisir',rarity:'Rareté',
+    'my-order':'Ma Commande',cart:'Panier',
+    'cart-empty':'Encore vide — choisissez votre sélection',
+    exclusive:'Exclusif','the-reserve':'La Réserve',
+    'single-order':'Commande Unique',
+    f1:'Torréfié frais à la commande',f2:'Mouture selon votre machine',
+    f3:'Histoire d\'origine incluse',f4:'Livraison en 48 heures',
+    order:'Commander','monthly-ai':'Mensuel · Curé par IA',
+    r1:'Rareté mensuelle — l\'IA choisit pour vous',r2:'Éditions Limitées & Micro-Lots',
+    r3:'Cafés aux enchères mondiaux',r4:'Torréfié frais, livraison 48h',
+    r5:'Notes de dégustation personnalisées',subscribe:'S\'abonner à La Réserve',
+    member:'MEMBRE RÉSERVE','taste-profile':'Profil Gustatif',
+    'profile-type':'Type','fav-origin':'Origine Favorite',
+    'roast-pref':'Préférence Torréfaction',grind:'Mouture',
+    'espresso-grind':'Espresso (fin)','order-history':'Historique',
+    'no-orders':'Aucune commande',subscription:'Abonnement',
+    active:'Actif','next-delivery':'Prochaine Livraison',
+    'this-month':'Ce Mois',
+    'nav-home':'Accueil','nav-profile':'Profil','nav-beans':'Grains',
+    'nav-cart':'Panier','nav-reserve':'Réserve','nav-me':'Moi',
+    next:'Suivant','your-profile':'Votre Profil',recommended:'Sélection Recommandée',
+    'order-now':'Commander',added:'Ajouté au panier',
+    ordered:'Commande passée!',welcome:'Bienvenue à La Réserve!',
+    collection:'Collection'
+  }
+};
+let lang = 'de';
+function setLang(l, btn) {
+  lang = l;
+  document.querySelectorAll('.lang-btn').forEach(b=>b.classList.remove('active'));
+  btn.classList.add('active');
+  document.querySelectorAll('[data-i18n]').forEach(el=>{
+    const key = el.getAttribute('data-i18n');
+    if(i18n[l][key]) el.innerHTML = i18n[l][key];
+  });
+}
+
+// ── NAVIGATION ──
+function goTo(pageId, btn) {
+  document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
+  document.querySelectorAll('.nav-item').forEach(b=>b.classList.remove('active'));
+  document.getElementById(pageId).classList.add('active');
+  if(btn) btn.classList.add('active');
+}
+
+// ── QUIZ ──
+const Qs = {
+  de:[
+    {q:"Wie geniessen Sie Ihren Kaffee?",opts:["☕ Espresso — pur & konzentriert","🥛 Mit Milch — rund & cremig","🫗 Filter — langsam & aromatisch","🧊 Cold Brew — kühl & modern"]},
+    {q:"Welches Geschmacksprofil zieht Sie an?",opts:["🍫 Schokolade & Nuss","🌸 Blüten & Früchte","🍯 Karamell & Süsse","🍋 Frische Säure"]},
+    {q:"Welche Herkunft fasziniert Sie?",opts:["🌍 Afrika — exotisch & komplex","🌎 Lateinamerika — klassisch","🌏 Yemen & Asien — selten","✨ Überrascht mich"]},
+    {q:"Was ist Ihnen am wichtigsten?",opts:["🎯 Konstante Qualität","✦ Rarität & Einzigartigkeit","📖 Herkunft & Geschichte","🤖 KI-Empfehlung"]}
+  ],
+  en:[
+    {q:"How do you enjoy your coffee?",opts:["☕ Espresso — pure & intense","🥛 With milk — smooth & creamy","🫗 Filter — slow & aromatic","🧊 Cold Brew — cool & modern"]},
+    {q:"Which flavour profile attracts you?",opts:["🍫 Chocolate & Nut","🌸 Floral & Fruity","🍯 Caramel & Sweet","🍋 Fresh Acidity"]},
+    {q:"Which origin fascinates you?",opts:["🌍 Africa — exotic & complex","🌎 Latin America — classic","🌏 Yemen & Asia — rare","✨ Surprise me"]},
+    {q:"What matters most to you?",opts:["🎯 Consistent quality","✦ Rarity & uniqueness","📖 Origin & story","🤖 AI recommendation"]}
+  ],
+  fr:[
+    {q:"Comment dégustez-vous votre café?",opts:["☕ Espresso — pur & intense","🥛 Avec du lait — doux & crémeux","🫗 Filtre — lent & aromatique","🧊 Cold Brew — frais & moderne"]},
+    {q:"Quel profil gustatif vous attire?",opts:["🍫 Chocolat & Noisette","🌸 Floral & Fruité","🍯 Caramel & Sucré","🍋 Acidité fraîche"]},
+    {q:"Quelle origine vous fascine?",opts:["🌍 Afrique — exotique & complexe","🌎 Amérique Latine — classique","🌏 Yémen & Asie — rare","✨ Surprenez-moi"]},
+    {q:"Qu\'est-ce qui compte le plus?",opts:["🎯 Qualité constante","✦ Rareté & unicité","📖 Origine & histoire","🤖 Recommandation IA"]}
+  ]
+};
+const profiles = {
+  de:[
+    {name:"Der Connaisseur",text:"Sie wissen genau, was Sie wollen. Kein Kompromiss, kein Zufall — nur die unmissverständliche Überzeugung, dass Qualität ihren Preis hat.",bean:"Al Hamdani · Yemen Haraz",origin:"Yemen",scores:[4,5,3,4,5]},
+    {name:"Der Entdecker",text:"Jede Tasse ist eine Reise. Sie suchen das Unbekannte, die überraschende Note, den Moment des Staunens.",bean:"Halo Beriti · Äthiopien Yirgacheffe",origin:"Äthiopien",scores:[5,3,4,3,4]},
+    {name:"Der Geniesser",text:"Balance und Eleganz. Ein Kaffee der begleitet, nicht herausfordert. Vertraut, aber nie gewöhnlich.",bean:"Finca La Palma · Kolumbien Huila",origin:"Kolumbien",scores:[3,4,5,4,3]},
+  ],
+  en:[
+    {name:"The Connoisseur",text:"You know exactly what you want. No compromise, no chance — just the unmistakable conviction that quality has its price.",bean:"Al Hamdani · Yemen Haraz",origin:"Yemen",scores:[4,5,3,4,5]},
+    {name:"The Explorer",text:"Every cup is a journey. You seek the unknown, the surprising note, the moment of wonder.",bean:"Halo Beriti · Ethiopia Yirgacheffe",origin:"Ethiopia",scores:[5,3,4,3,4]},
+    {name:"The Epicure",text:"Balance and elegance. A coffee that accompanies, never challenges. Familiar, but never ordinary.",bean:"Finca La Palma · Colombia Huila",origin:"Colombia",scores:[3,4,5,4,3]},
+  ],
+  fr:[
+    {name:"Le Connaisseur",text:"Vous savez exactement ce que vous voulez. Aucun compromis — juste la conviction que la qualité a son prix.",bean:"Al Hamdani · Yémen Haraz",origin:"Yémen",scores:[4,5,3,4,5]},
+    {name:"L'Explorateur",text:"Chaque tasse est un voyage. Vous cherchez l'inconnu, la note surprenante, le moment d'émerveillement.",bean:"Halo Beriti · Éthiopie Yirgacheffe",origin:"Éthiopie",scores:[5,3,4,3,4]},
+    {name:"L'Épicurien",text:"Équilibre et élégance. Un café qui accompagne, jamais qui défie. Familier, mais jamais ordinaire.",bean:"Finca La Palma · Colombie Huila",origin:"Colombie",scores:[3,4,5,4,3]},
+  ]
+};
+
+let cur=0, ans=[], profileIdx=0;
 function renderQ(){
-  const q=Qs[cur];
-  document.getElementById('qstep').textContent=`${['I','II','III','IV'][cur]} / IV`;
+  const q=Qs[lang][cur];
+  document.getElementById('qstep').textContent=['I','II','III','IV'][cur]+' / IV';
   document.getElementById('qtext').textContent=q.q;
   const o=document.getElementById('qopts'); o.innerHTML='';
   q.opts.forEach((t,i)=>{
     const b=document.createElement('button');
     b.className='quiz-opt'; b.textContent=t;
-    b.onclick=()=>{ document.querySelectorAll('.quiz-opt').forEach(x=>x.classList.remove('sel')); b.classList.add('sel'); ans[cur]=i; };
+    b.onclick=()=>{document.querySelectorAll('.quiz-opt').forEach(x=>x.classList.remove('sel'));b.classList.add('sel');ans[cur]=i;};
     o.appendChild(b);
   });
 }
 function nextQ(){
-  if(ans[cur]===undefined){ ans[cur]=0; document.querySelectorAll('.quiz-opt')[0].classList.add('sel'); return; }
+  if(ans[cur]===undefined){ans[cur]=0;document.querySelectorAll('.quiz-opt')[0].classList.add('sel');return;}
   cur++;
-  if(cur>=Qs.length){ showResult(); } else { renderQ(); }
+  if(cur>=4){showResult();}else{renderQ();}
 }
 function showResult(){
   document.getElementById('quiz-box').style.display='none';
-  const p=profiles[ans[1]%3];
+  profileIdx = ans[1]%3;
+  const p=profiles[lang][profileIdx];
   document.getElementById('r-name').textContent=p.name;
   document.getElementById('r-text').textContent=p.text;
   document.getElementById('r-bean').textContent=p.bean;
   document.getElementById('result-box').style.display='block';
+  document.getElementById('prof-type').textContent=p.name;
+  document.getElementById('prof-origin').textContent=p.origin;
+  drawRadar(p.scores);
 }
+renderQ();
+
+// ── RADAR CHART ──
+function drawRadar(scores){
+  const canvas=document.getElementById('radar');
+  const ctx=canvas.getContext('2d');
+  const cx=130,cy=130,r=90;
+  const labels=['Säure','Süsse','Körper','Bitter','Komplex'];
+  const n=5;
+  ctx.clearRect(0,0,260,260);
+  // grid
+  for(let ring=1;ring<=5;ring++){
+    ctx.beginPath();
+    for(let i=0;i<n;i++){
+      const a=(i/n)*Math.PI*2-Math.PI/2;
+      const x=cx+r*(ring/5)*Math.cos(a), y=cy+r*(ring/5)*Math.sin(a);
+      i===0?ctx.moveTo(x,y):ctx.lineTo(x,y);
+    }
+    ctx.closePath();
+    ctx.strokeStyle='rgba(184,150,46,0.15)';ctx.stroke();
+  }
+  // axes
+  for(let i=0;i<n;i++){
+    const a=(i/n)*Math.PI*2-Math.PI/2;
+    ctx.beginPath();ctx.moveTo(cx,cy);
+    ctx.lineTo(cx+r*Math.cos(a),cy+r*Math.sin(a));
+    ctx.strokeStyle='rgba(184,150,46,0.2)';ctx.stroke();
+    // label
+    ctx.fillStyle='rgba(245,237,216,0.5)';ctx.font='10px Montserrat';ctx.textAlign='center';
+    ctx.fillText(labels[i],cx+(r+18)*Math.cos(a),cy+(r+18)*Math.sin(a)+4);
+  }
+  // data
+  ctx.beginPath();
+  for(let i=0;i<n;i++){
+    const a=(i/n)*Math.PI*2-Math.PI/2;
+    const v=scores[i]/5;
+    const x=cx+r*v*Math.cos(a), y=cy+r*v*Math.sin(a);
+    i===0?ctx.moveTo(x,y):ctx.lineTo(x,y);
+  }
+  ctx.closePath();
+  ctx.fillStyle='rgba(184,150,46,0.25)';ctx.fill();
+  ctx.strokeStyle='rgba(184,150,46,0.9)';ctx.lineWidth=2;ctx.stroke();
+  // dots
+  for(let i=0;i<n;i++){
+    const a=(i/n)*Math.PI*2-Math.PI/2;
+    const v=scores[i]/5;
+    ctx.beginPath();ctx.arc(cx+r*v*Math.cos(a),cy+r*v*Math.sin(a),4,0,Math.PI*2);
+    ctx.fillStyle='var(--gold)';ctx.fill();
+  }
+}
+
+// ── ROAST ──
 function setRoast(el,id){
   document.getElementById(id).textContent=['Light Roast','Medium Roast','Dark Roast'][el.value-1];
 }
+
+// ── MAP ──
+const mapInfoData={
+  ethiopia:{name:'🇪🇹 Äthiopien · Yirgacheffe',text:'Geburtsland des Kaffees. Die Region Yirgacheffe auf 1800–2200m produziert die aromatischsten Bohnen der Welt — blumig, fruchtig, komplex.'},
+  yemen:{name:'🇾🇪 Yemen · Haraz',text:'Einer der seltensten Kaffees der Welt. Jahrtausendealte Tradition, angebaut auf Steinterrassen in den Bergen — intensiv, komplex, unnachahmlich.'},
+  colombia:{name:'🇨🇴 Kolumbien · Huila',text:'Die Region Huila im Süden Kolumbiens auf 1600–2000m gilt als Epizentrum der kolumbianischen Kaffeequalität — süss, ausgewogen, zuverlässig elegant.'},
+};
+function showMapInfo(key){
+  const el=document.getElementById('map-info');
+  const d=mapInfoData[key];
+  el.innerHTML=`<strong style="color:var(--gold);font-size:11px;letter-spacing:2px;">${d.name}</strong><br><br>${d.text}`;
+  el.classList.add('show');
+}
+
+// ── CART ──
+let cart=[];
+function addToCart(name,price,origin,roast){
+  cart.push({name,price,origin,roast});
+  updateCart();
+}
+function updateCart(){
+  const badge=document.getElementById('cart-badge');
+  badge.textContent=cart.length+' Artikel';
+  const content=document.getElementById('cart-content');
+  if(cart.length===0){
+    content.innerHTML='<div class="cart-empty"><div class="cart-empty-icon">☕</div><div class="cart-empty-text">'+i18n[lang]['cart-empty']+'</div></div>';
+    return;
+  }
+  let total=0;
+  let html=cart.map((item,i)=>{
+    const num=parseInt(item.price.replace('CHF ',''));
+    total+=num;
+    return `<div class="cart-item">
+      <div class="cart-item-info">
+        <div class="cart-item-name">${item.name}</div>
+        <div class="cart-item-detail">${item.origin} · ${item.roast}</div>
+      </div>
+      <div style="display:flex;align-items:center;">
+        <div class="cart-item-price">${item.price}</div>
+        <button class="cart-item-remove" onclick="removeItem(${i})">✕</button>
+      </div>
+    </div>`;
+  }).join('');
+  html+=`<div class="cart-summary">
+    <div class="cart-total">
+      <div class="cart-total-label">Total</div>
+      <div class="cart-total-price">CHF ${total}</div>
+    </div>
+    <button class="btn-p" style="width:100%;" onclick="checkout()">Checkout →</button>
+  </div>`;
+  content.innerHTML=html;
+
+  // update order history
+  const history=document.getElementById('order-history');
+  history.innerHTML=cart.map(item=>`
+    <div class="order-item">
+      <div class="order-header">
+        <div class="order-name">${item.name}</div>
+        <div class="order-price">${item.price}</div>
+      </div>
+      <div class="order-detail">${item.origin} · ${item.roast} · Heute</div>
+    </div>`).join('');
+}
+function removeItem(i){cart.splice(i,1);updateCart();}
+function checkout(){
+  cart=[];updateCart();
+  showToast('✓ Bestellung aufgegeben — wird frisch geröstet!');
+}
+
+// ── TOAST ──
 function showToast(msg){
-  const t=document.getElementById('toast'); t.textContent=msg; t.style.display='block';
+  const t=document.getElementById('toast');
+  t.textContent=msg;t.style.display='block';
   setTimeout(()=>t.style.display='none',3000);
 }
-renderQ();
 </script>
 </body>
 </html>
