@@ -3,347 +3,610 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>ORIGEM — Premium Coffee</title>
+  <title>ORIGEM</title>
   <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Montserrat:wght@300;400;500&display=swap" rel="stylesheet">
   <style>
     *{margin:0;padding:0;box-sizing:border-box;}
-    :root{--black:#080808;--gold:#B8962E;--gold2:#D4AF5A;--cream:#F5EDD8;--grey:#888;--warm:#1C0A00;}
+    :root{
+      --black:#070707;
+      --gold:#B8962E;
+      --gold2:#D4AF5A;
+      --cream:#F0E8D5;
+      --white:#FAFAFA;
+      --grey:#666;
+      --grey2:#333;
+      --border:rgba(184,150,46,0.18);
+    }
     html{scroll-behavior:smooth;}
-    body{font-family:'Montserrat',sans-serif;background:var(--black);color:var(--cream);padding-bottom:72px;max-width:480px;margin:0 auto;}
+    body{
+      font-family:'Montserrat',sans-serif;
+      background:var(--black);
+      color:var(--cream);
+      padding-bottom:68px;
+      max-width:460px;
+      margin:0 auto;
+      -webkit-font-smoothing:antialiased;
+    }
 
-    /* NAV */
-    .bnav{position:fixed;bottom:0;left:50%;transform:translateX(-50%);width:100%;max-width:480px;z-index:200;background:rgba(8,8,8,0.97);border-top:1px solid rgba(184,150,46,0.15);display:flex;justify-content:space-around;padding:10px 0 16px;}
-    .bi{display:flex;flex-direction:column;align-items:center;gap:3px;font-size:8px;letter-spacing:2px;text-transform:uppercase;color:var(--grey);cursor:pointer;transition:color 0.2s;flex:1;border:none;background:none;padding:0;}
-    .bi.active,.bi:hover{color:var(--gold);}
-    .bi-icon{font-size:18px;line-height:1;}
+    /* ── PAGES ── */
+    .page{display:none;min-height:100vh;}
+    .page.active{display:block;}
 
-    /* PAGES */
-    .page{display:none;}.page.active{display:block;}
+    /* ── NAV ── */
+    .bnav{
+      position:fixed;bottom:0;left:50%;transform:translateX(-50%);
+      width:100%;max-width:460px;z-index:200;
+      background:var(--black);
+      border-top:1px solid var(--border);
+      display:flex;justify-content:space-around;
+      padding:12px 0 18px;
+    }
+    .bi{
+      display:flex;flex-direction:column;align-items:center;gap:5px;
+      font-size:8px;letter-spacing:2.5px;text-transform:uppercase;
+      color:var(--grey);cursor:pointer;transition:color 0.3s;
+      flex:1;border:none;background:none;padding:0;
+      font-family:'Montserrat',sans-serif;
+    }
+    .bi.active{color:var(--gold);}
+    .bi:hover{color:var(--cream);}
+    .bi-icon{
+      width:20px;height:20px;
+      display:flex;align-items:center;justify-content:center;
+    }
+    /* SVG icons inline */
+    .icon-home::before{content:'';display:block;width:16px;height:14px;border:1px solid currentColor;clip-path:polygon(50% 0%,0% 55%,15% 55%,15% 100%,85% 100%,85% 55%,100% 55%);}
+    .icon-beans::before{content:'';display:block;width:14px;height:14px;border-radius:50% 50% 50% 0;border:1px solid currentColor;transform:rotate(-45deg);}
+    .icon-cart::before{content:'';display:block;width:15px;height:12px;border:1px solid currentColor;border-top:none;position:relative;}
+    .icon-gift::before{content:'';display:block;width:14px;height:12px;border:1px solid currentColor;position:relative;}
+    .icon-lock::before{content:'';display:block;width:12px;height:14px;border:1px solid currentColor;border-radius:0 0 2px 2px;}
+    .icon-user::before{content:'';display:block;width:12px;height:12px;border-radius:50%;border:1px solid currentColor;}
 
-    /* TOPBAR */
-    .tb{display:flex;justify-content:space-between;align-items:center;padding:20px 20px 16px;border-bottom:1px solid rgba(184,150,46,0.08);}
-    .logo{font-family:'Cormorant Garamond',serif;font-size:18px;letter-spacing:8px;color:var(--gold);}
-    .tb-right{font-size:9px;color:var(--grey);letter-spacing:1px;}
+    /* ── TOPBAR ── */
+    .tb{
+      display:flex;justify-content:space-between;align-items:center;
+      padding:22px 24px 18px;
+      border-bottom:1px solid var(--border);
+    }
+    .logo{
+      font-family:'Cormorant Garamond',serif;
+      font-size:17px;letter-spacing:9px;
+      color:var(--gold);font-weight:400;
+    }
+    .tb-r{font-size:9px;color:var(--grey);letter-spacing:2px;text-transform:uppercase;}
 
-    /* BUTTONS */
-    .btn-gold{background:var(--gold);color:var(--black);border:none;padding:16px 32px;font-family:'Montserrat',sans-serif;font-size:10px;letter-spacing:3px;text-transform:uppercase;cursor:pointer;transition:background 0.25s;width:100%;}
-    .btn-gold:hover{background:var(--gold2);}
-    .btn-out{background:transparent;color:var(--gold);border:1px solid rgba(184,150,46,0.4);padding:14px 24px;font-family:'Montserrat',sans-serif;font-size:10px;letter-spacing:2px;text-transform:uppercase;cursor:pointer;transition:all 0.25s;width:100%;}
-    .btn-out:hover{border-color:var(--gold);background:rgba(184,150,46,0.05);}
-    .btn-small{background:var(--gold);color:var(--black);border:none;padding:10px 20px;font-family:'Montserrat',sans-serif;font-size:9px;letter-spacing:2px;text-transform:uppercase;cursor:pointer;white-space:nowrap;}
+    /* ── TYPOGRAPHY ── */
+    .eyebrow{font-size:8px;letter-spacing:5px;color:var(--gold);text-transform:uppercase;}
+    .display{font-family:'Cormorant Garamond',serif;font-weight:300;color:var(--white);letter-spacing:2px;}
+    .italic{font-family:'Cormorant Garamond',serif;font-style:italic;color:var(--grey);}
+    .rule{width:32px;height:1px;background:var(--gold);margin:16px 0;}
 
-    /* HOME */
-    .home-hero{padding:36px 20px 28px;background:radial-gradient(ellipse at 50% 30%,rgba(184,150,46,0.08),transparent 65%);text-align:center;border-bottom:1px solid rgba(184,150,46,0.08);}
-    .home-eye{font-size:8px;letter-spacing:5px;color:var(--gold);text-transform:uppercase;margin-bottom:12px;}
-    .home-title{font-family:'Cormorant Garamond',serif;font-size:52px;font-weight:300;letter-spacing:10px;color:var(--cream);margin-bottom:8px;}
-    .home-sub{font-family:'Cormorant Garamond',serif;font-size:14px;font-style:italic;color:rgba(245,237,216,0.5);margin-bottom:28px;line-height:1.7;}
-    .qs-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;padding:20px;}
-    .qs-card{border:1px solid rgba(184,150,46,0.2);padding:20px 16px;cursor:pointer;transition:all 0.25s;text-align:left;}
-    .qs-card:hover{border-color:var(--gold);background:rgba(184,150,46,0.04);}
-    .qs-icon{font-size:24px;margin-bottom:10px;}
+    /* ── BUTTONS ── */
+    .btn{
+      width:100%;border:none;padding:16px;
+      font-family:'Montserrat',sans-serif;font-size:9px;
+      letter-spacing:4px;text-transform:uppercase;cursor:pointer;
+      transition:all 0.3s;
+    }
+    .btn-solid{background:var(--gold);color:var(--black);}
+    .btn-solid:hover{background:var(--gold2);}
+    .btn-ghost{background:transparent;color:var(--gold);border:1px solid var(--border);}
+    .btn-ghost:hover{border-color:var(--gold);}
+    .btn-inline{
+      background:var(--gold);color:var(--black);border:none;
+      padding:10px 20px;font-family:'Montserrat',sans-serif;
+      font-size:8px;letter-spacing:3px;text-transform:uppercase;
+      cursor:pointer;white-space:nowrap;transition:background 0.2s;
+    }
+    .btn-inline:hover{background:var(--gold2);}
+
+    /* ══════════════════
+       HOME
+    ══════════════════ */
+    .home-hero{
+      padding:44px 24px 36px;
+      text-align:center;
+      border-bottom:1px solid var(--border);
+    }
+    .home-title{
+      font-family:'Cormorant Garamond',serif;
+      font-size:58px;font-weight:300;
+      letter-spacing:12px;color:var(--white);
+      margin:14px 0 12px;text-transform:uppercase;
+    }
+    .home-sub{
+      font-family:'Cormorant Garamond',serif;
+      font-size:15px;font-style:italic;
+      color:var(--grey);line-height:1.8;margin-bottom:32px;
+    }
+
+    /* Today's pick */
+    .pick{margin:24px;border:1px solid var(--border);padding:22px;}
+    .pick-label{font-size:8px;letter-spacing:4px;color:var(--gold);text-transform:uppercase;margin-bottom:14px;}
+    .pick-row{display:flex;justify-content:space-between;align-items:flex-end;}
+    .pick-origin{font-size:9px;letter-spacing:2px;color:var(--grey);margin-bottom:6px;text-transform:uppercase;}
+    .pick-name{font-family:'Cormorant Garamond',serif;font-size:22px;color:var(--white);margin-bottom:4px;}
+    .pick-notes{font-family:'Cormorant Garamond',serif;font-size:12px;font-style:italic;color:var(--grey);}
+    .pick-price{font-family:'Cormorant Garamond',serif;font-size:22px;color:var(--gold);margin-bottom:10px;text-align:right;}
+
+    /* Concierge */
+    .concierge{
+      margin:0 24px 24px;
+      border:1px solid var(--border);
+      padding:18px 20px;
+      display:flex;align-items:center;justify-content:space-between;
+      cursor:pointer;transition:border-color 0.3s;
+    }
+    .concierge:hover{border-color:var(--gold);}
+    .c-dot{
+      width:6px;height:6px;border-radius:50%;
+      background:#4CAF50;margin-right:12px;flex-shrink:0;
+      animation:pulse 2.5s infinite;
+    }
+    @keyframes pulse{0%,100%{opacity:1;}50%{opacity:0.3;}}
+    .c-title{font-size:10px;color:var(--white);letter-spacing:1px;margin-bottom:2px;}
+    .c-sub{font-size:8px;color:var(--grey);letter-spacing:1px;}
+
+    /* Quickstart */
+    .qs{display:grid;grid-template-columns:1fr 1fr;gap:1px;background:var(--border);margin:0 24px 24px;}
+    .qs-item{
+      background:var(--black);padding:22px 18px;
+      cursor:pointer;transition:background 0.25s;
+    }
+    .qs-item:hover{background:rgba(184,150,46,0.04);}
+    .qs-num{font-family:'Cormorant Garamond',serif;font-size:28px;color:var(--border);margin-bottom:10px;}
     .qs-label{font-size:8px;letter-spacing:3px;color:var(--gold);text-transform:uppercase;margin-bottom:6px;}
-    .qs-text{font-family:'Cormorant Garamond',serif;font-size:15px;color:var(--cream);line-height:1.4;}
-    .todays-pick{margin:0 20px 20px;border:1px solid rgba(184,150,46,0.35);padding:20px;}
-    .pick-eye{font-size:8px;letter-spacing:4px;color:var(--gold);text-transform:uppercase;margin-bottom:12px;}
-    .pick-body{display:flex;justify-content:space-between;align-items:flex-end;}
-    .pick-origin{font-size:9px;letter-spacing:2px;color:var(--grey);margin-bottom:6px;}
-    .pick-name{font-family:'Cormorant Garamond',serif;font-size:22px;color:var(--cream);margin-bottom:4px;}
-    .pick-notes{font-family:'Cormorant Garamond',serif;font-size:12px;font-style:italic;color:rgba(245,237,216,0.5);}
-    .pick-price{font-family:'Cormorant Garamond',serif;font-size:22px;color:var(--gold);margin-bottom:10px;}
-    .steps{padding:20px 20px 0;}
-    .steps-title{font-size:8px;letter-spacing:4px;color:var(--gold);text-transform:uppercase;margin-bottom:16px;}
-    .step{display:flex;align-items:flex-start;gap:14px;margin-bottom:16px;}
-    .step-num{width:24px;height:24px;border-radius:50%;border:1px solid rgba(184,150,46,0.4);display:flex;align-items:center;justify-content:center;font-size:10px;color:var(--gold);flex-shrink:0;}
-    .step-title{font-size:11px;color:var(--cream);margin-bottom:2px;letter-spacing:1px;}
-    .step-desc{font-size:9px;color:var(--grey);line-height:1.5;}
-    .step-line{width:1px;height:16px;background:rgba(184,150,46,0.2);margin-left:11px;}
+    .qs-text{font-family:'Cormorant Garamond',serif;font-size:14px;color:var(--white);line-height:1.4;}
 
-    /* BEANS */
-    .filter-bar{display:flex;gap:8px;padding:16px 20px;overflow-x:auto;border-bottom:1px solid rgba(184,150,46,0.08);}
-    .filter-bar::-webkit-scrollbar{display:none;}
-    .fb{background:transparent;border:1px solid rgba(184,150,46,0.25);color:var(--grey);padding:8px 16px;font-size:9px;letter-spacing:2px;text-transform:uppercase;cursor:pointer;white-space:nowrap;transition:all 0.2s;font-family:'Montserrat',sans-serif;}
-    .fb.active,.fb:hover{border-color:var(--gold);color:var(--gold);background:rgba(184,150,46,0.05);}
-    .bean-list{padding:0 20px;}
-    .bcard{border:1px solid rgba(184,150,46,0.15);margin:16px 0;transition:border-color 0.25s;}
+    /* How it works */
+    .how{padding:24px 24px 8px;border-top:1px solid var(--border);}
+    .how-title{font-size:8px;letter-spacing:4px;color:var(--gold);text-transform:uppercase;margin-bottom:20px;}
+    .how-step{display:flex;gap:16px;margin-bottom:20px;}
+    .how-n{
+      font-family:'Cormorant Garamond',serif;font-size:13px;
+      color:var(--gold);width:20px;flex-shrink:0;padding-top:2px;
+    }
+    .how-t{font-size:10px;color:var(--white);letter-spacing:1px;margin-bottom:3px;}
+    .how-d{font-size:9px;color:var(--grey);line-height:1.6;}
+
+    /* ══════════════════
+       BEANS
+    ══════════════════ */
+    .fbar{
+      display:flex;gap:8px;padding:16px 24px;
+      overflow-x:auto;border-bottom:1px solid var(--border);
+    }
+    .fbar::-webkit-scrollbar{display:none;}
+    .fb{
+      background:transparent;border:1px solid var(--border);
+      color:var(--grey);padding:8px 16px;
+      font-size:8px;letter-spacing:2px;text-transform:uppercase;
+      cursor:pointer;white-space:nowrap;transition:all 0.2s;
+      font-family:'Montserrat',sans-serif;
+    }
+    .fb.active,.fb:hover{border-color:var(--gold);color:var(--gold);}
+
+    .blist{padding:0 24px 24px;}
+    .bcard{
+      border:1px solid var(--border);margin-top:16px;
+      transition:border-color 0.3s;
+    }
     .bcard:hover{border-color:rgba(184,150,46,0.4);}
-    .bcard-top{padding:20px;}
-    .bcard-meta{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:10px;}
-    .bcard-badge{font-size:8px;letter-spacing:2px;color:var(--black);background:var(--gold);padding:3px 8px;text-transform:uppercase;}
-    .bcard-country{font-size:8px;letter-spacing:2px;color:var(--gold);text-transform:uppercase;}
-    .bcard-name{font-family:'Cormorant Garamond',serif;font-size:22px;color:var(--cream);margin-bottom:6px;}
-    .bcard-tasting{font-family:'Cormorant Garamond',serif;font-size:12px;font-style:italic;color:rgba(245,237,216,0.5);margin-bottom:16px;line-height:1.5;}
-    .roast-pick{display:flex;gap:6px;margin-bottom:16px;}
-    .rp{flex:1;border:1px solid rgba(184,150,46,0.2);padding:8px 6px;text-align:center;font-size:9px;letter-spacing:1px;color:var(--grey);cursor:pointer;transition:all 0.2s;}
-    .rp.sel,.rp:hover{border-color:var(--gold);color:var(--gold);background:rgba(184,150,46,0.06);}
-    .bcard-footer{display:flex;justify-content:space-between;align-items:center;padding:14px 20px;border-top:1px solid rgba(184,150,46,0.08);}
-    .bcard-price{font-family:'Cormorant Garamond',serif;font-size:22px;color:var(--gold);}
-    .bcard-price span{font-size:11px;color:var(--grey);font-family:'Montserrat',sans-serif;}
+    .bcard-inner{padding:22px 22px 16px;}
+    .bc-top{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:12px;}
+    .bc-origin{font-size:8px;letter-spacing:2px;color:var(--grey);text-transform:uppercase;}
+    .bc-badge{
+      font-size:7px;letter-spacing:2px;
+      color:var(--black);background:var(--gold);
+      padding:3px 8px;text-transform:uppercase;
+    }
+    .bc-name{font-family:'Cormorant Garamond',serif;font-size:22px;color:var(--white);margin-bottom:6px;}
+    .bc-taste{
+      font-family:'Cormorant Garamond',serif;font-size:12px;
+      font-style:italic;color:var(--grey);margin-bottom:18px;line-height:1.5;
+    }
+    .roast-row{margin-bottom:16px;}
+    .roast-lbl{font-size:7px;letter-spacing:3px;color:var(--grey);text-transform:uppercase;margin-bottom:8px;}
+    .roast-opts{display:flex;gap:6px;}
+    .rp{
+      flex:1;border:1px solid var(--border);padding:9px 6px;
+      text-align:center;font-size:8px;letter-spacing:1px;
+      color:var(--grey);cursor:pointer;transition:all 0.2s;
+      font-family:'Montserrat',sans-serif;
+    }
+    .rp.sel{border-color:var(--gold);color:var(--gold);}
+    .bc-footer{
+      display:flex;justify-content:space-between;align-items:center;
+      padding:14px 22px;border-top:1px solid var(--border);
+    }
+    .bc-price{font-family:'Cormorant Garamond',serif;font-size:22px;color:var(--gold);}
+    .bc-price span{font-size:10px;color:var(--grey);font-family:'Montserrat',sans-serif;}
 
-    /* CART */
-    .cart-empty{text-align:center;padding:80px 24px;}
-    .ce-icon{font-size:40px;margin-bottom:16px;opacity:0.3;}
-    .ce-text{font-family:'Cormorant Garamond',serif;font-size:18px;font-style:italic;color:var(--grey);margin-bottom:24px;}
-    .cart-item{display:flex;justify-content:space-between;align-items:center;padding:16px 20px;border-bottom:1px solid rgba(184,150,46,0.07);}
-    .ci-name{font-family:'Cormorant Garamond',serif;font-size:16px;color:var(--cream);margin-bottom:3px;}
+    /* ══════════════════
+       CART
+    ══════════════════ */
+    .cart-empty{text-align:center;padding:90px 24px;}
+    .ce-text{font-family:'Cormorant Garamond',serif;font-size:18px;font-style:italic;color:var(--grey);margin-bottom:28px;}
+
+    .citem{display:flex;justify-content:space-between;align-items:center;padding:16px 24px;border-bottom:1px solid var(--border);}
+    .ci-name{font-family:'Cormorant Garamond',serif;font-size:16px;color:var(--white);margin-bottom:3px;}
     .ci-detail{font-size:8px;letter-spacing:1px;color:var(--grey);}
-    .ci-right{display:flex;align-items:center;gap:12px;}
+    .ci-r{display:flex;align-items:center;gap:14px;}
     .ci-price{font-family:'Cormorant Garamond',serif;font-size:18px;color:var(--gold);}
-    .ci-rm{background:none;border:none;color:rgba(245,237,216,0.2);cursor:pointer;font-size:14px;}
-    .ci-rm:hover{color:rgba(245,237,216,0.6);}
-    .checkout-box{margin:0 20px 20px;border:1px solid rgba(184,150,46,0.2);padding:20px;}
-    .co-row{display:flex;justify-content:space-between;margin-bottom:10px;font-size:10px;}
-    .co-label{color:var(--grey);letter-spacing:1px;}
+    .ci-rm{background:none;border:none;color:var(--grey2);cursor:pointer;font-size:12px;letter-spacing:1px;transition:color 0.2s;font-family:'Montserrat',sans-serif;}
+    .ci-rm:hover{color:var(--grey);}
+
+    .co-box{padding:22px 24px 24px;border-top:1px solid var(--border);}
+    .co-row{display:flex;justify-content:space-between;margin-bottom:10px;font-size:9px;letter-spacing:1px;}
+    .co-lbl{color:var(--grey);}
     .co-val{color:var(--cream);}
-    .co-total{display:flex;justify-content:space-between;padding-top:14px;border-top:1px solid rgba(184,150,46,0.15);margin-bottom:20px;}
-    .co-total-label{font-size:10px;letter-spacing:3px;color:var(--grey);text-transform:uppercase;}
-    .co-total-price{font-family:'Cormorant Garamond',serif;font-size:26px;color:var(--gold);}
-    .co-steps{display:flex;justify-content:space-between;margin-bottom:20px;position:relative;}
-    .co-steps::before{content:'';position:absolute;top:12px;left:0;right:0;height:1px;background:rgba(184,150,46,0.15);}
-    .co-step{display:flex;flex-direction:column;align-items:center;gap:6px;z-index:1;}
-    .co-step-dot{width:24px;height:24px;border-radius:50%;border:1px solid rgba(184,150,46,0.3);background:var(--black);display:flex;align-items:center;justify-content:center;font-size:10px;color:var(--grey);}
-    .co-step.done .co-step-dot{background:var(--gold);border-color:var(--gold);color:var(--black);}
-    .co-step.active .co-step-dot{border-color:var(--gold);color:var(--gold);}
-    .co-step-label{font-size:8px;letter-spacing:1px;color:var(--grey);}
-    .co-step.active .co-step-label,.co-step.done .co-step-label{color:var(--gold);}
+    .co-total{
+      display:flex;justify-content:space-between;
+      padding-top:16px;margin-top:6px;
+      border-top:1px solid var(--border);margin-bottom:22px;
+    }
+    .co-tl{font-size:9px;letter-spacing:3px;color:var(--grey);text-transform:uppercase;}
+    .co-tp{font-family:'Cormorant Garamond',serif;font-size:28px;color:var(--gold);}
 
-    /* ── GIFTING ── */
-    .gift-banner{margin:0 20px 20px;background:rgba(184,150,46,0.06);border:1px solid rgba(184,150,46,0.3);padding:20px;display:flex;gap:16px;align-items:center;cursor:pointer;transition:background 0.2s;}
-    .gift-banner:hover{background:rgba(184,150,46,0.1);}
-    .gift-icon{font-size:28px;flex-shrink:0;}
-    .gift-title{font-family:'Cormorant Garamond',serif;font-size:16px;color:var(--cream);margin-bottom:3px;}
-    .gift-sub{font-size:9px;color:var(--grey);letter-spacing:1px;}
-    .gift-arrow{font-size:18px;color:var(--gold);margin-left:auto;}
-    .gift-form{display:none;margin:0 20px 20px;border:1px solid rgba(184,150,46,0.2);padding:20px;}
+    /* Progress */
+    .progress{display:flex;justify-content:space-between;padding:20px 24px;position:relative;}
+    .progress::before{content:'';position:absolute;top:32px;left:36px;right:36px;height:1px;background:var(--border);}
+    .ps{display:flex;flex-direction:column;align-items:center;gap:7px;z-index:1;}
+    .ps-d{
+      width:24px;height:24px;border-radius:50%;
+      border:1px solid var(--border);background:var(--black);
+      display:flex;align-items:center;justify-content:center;
+      font-size:9px;color:var(--grey);
+    }
+    .ps.done .ps-d{background:var(--gold);border-color:var(--gold);color:var(--black);}
+    .ps.now .ps-d{border-color:var(--gold);color:var(--gold);}
+    .ps-l{font-size:7px;letter-spacing:1px;color:var(--grey);text-transform:uppercase;}
+    .ps.done .ps-l,.ps.now .ps-l{color:var(--gold);}
+
+    /* ══════════════════
+       GIFTING
+    ══════════════════ */
+    .gift-hero{
+      padding:36px 24px 28px;text-align:center;
+      border-bottom:1px solid var(--border);
+    }
+    .gift-options{padding:20px 24px 0;}
+    .go-item{
+      border:1px solid var(--border);padding:18px 20px;
+      margin-bottom:10px;cursor:pointer;transition:border-color 0.25s;
+      display:flex;justify-content:space-between;align-items:center;
+    }
+    .go-item:hover{border-color:rgba(184,150,46,0.4);}
+    .go-item.sel{border-color:var(--gold);}
+    .go-name{font-family:'Cormorant Garamond',serif;font-size:18px;color:var(--white);margin-bottom:3px;}
+    .go-origin{font-size:8px;letter-spacing:2px;color:var(--grey);text-transform:uppercase;}
+    .go-price{font-family:'Cormorant Garamond',serif;font-size:20px;color:var(--gold);flex-shrink:0;margin-left:16px;}
+
+    .gift-form{
+      display:none;padding:24px;
+      border-top:1px solid var(--border);
+      margin-top:8px;
+    }
     .gift-form.show{display:block;}
-    .gift-form-title{font-family:'Cormorant Garamond',serif;font-size:18px;color:var(--cream);margin-bottom:16px;}
-    .gift-input{width:100%;background:transparent;border:none;border-bottom:1px solid rgba(184,150,46,0.3);color:var(--cream);padding:10px 0;font-family:'Montserrat',sans-serif;font-size:11px;margin-bottom:16px;outline:none;}
-    .gift-input::placeholder{color:var(--grey);font-size:10px;letter-spacing:1px;}
-    .gift-textarea{width:100%;background:transparent;border:1px solid rgba(184,150,46,0.2);color:var(--cream);padding:12px;font-family:'Cormorant Garamond',serif;font-size:13px;font-style:italic;margin-bottom:16px;outline:none;resize:none;height:80px;}
-    .gift-textarea::placeholder{color:var(--grey);}
+    .gf-title{font-family:'Cormorant Garamond',serif;font-size:18px;color:var(--white);margin-bottom:18px;}
+    .inp{
+      width:100%;background:transparent;border:none;
+      border-bottom:1px solid var(--border);
+      color:var(--cream);padding:10px 0;
+      font-family:'Montserrat',sans-serif;font-size:10px;
+      margin-bottom:14px;outline:none;letter-spacing:1px;
+      transition:border-color 0.2s;
+    }
+    .inp:focus{border-color:var(--gold);}
+    .inp::placeholder{color:var(--grey);font-size:9px;letter-spacing:1px;}
+    .textarea{
+      width:100%;background:transparent;
+      border:1px solid var(--border);
+      color:var(--cream);padding:14px;
+      font-family:'Cormorant Garamond',serif;font-size:14px;
+      font-style:italic;margin-bottom:16px;
+      outline:none;resize:none;height:80px;
+      transition:border-color 0.2s;
+    }
+    .textarea:focus{border-color:var(--gold);}
+    .textarea::placeholder{color:var(--grey);}
 
-    /* ── CONCIERGE ── */
-    .concierge-bar{margin:0 20px 0;border:1px solid rgba(184,150,46,0.2);padding:18px 20px;display:flex;align-items:center;justify-content:space-between;cursor:pointer;transition:all 0.2s;}
-    .concierge-bar:hover{border-color:var(--gold);background:rgba(184,150,46,0.03);}
-    .cb-left{display:flex;align-items:center;gap:14px;}
-    .cb-dot{width:8px;height:8px;border-radius:50%;background:#2ECC71;animation:blink 2s infinite;}
-    @keyframes blink{0%,100%{opacity:1;}50%{opacity:0.4;}}
-    .cb-title{font-size:11px;color:var(--cream);letter-spacing:1px;margin-bottom:2px;}
-    .cb-sub{font-size:9px;color:var(--grey);}
-    .cb-btn{background:var(--gold);color:var(--black);border:none;padding:10px 18px;font-size:9px;letter-spacing:2px;text-transform:uppercase;cursor:pointer;font-family:'Montserrat',sans-serif;white-space:nowrap;}
+    /* ══════════════════
+       BLACK RESERVE
+    ══════════════════ */
+    .wl-hero{
+      padding:40px 24px 28px;text-align:center;
+      border-bottom:1px solid var(--border);
+    }
+    .wl-badge{
+      display:inline-block;font-size:7px;letter-spacing:5px;
+      color:var(--black);background:var(--gold);
+      padding:5px 14px;text-transform:uppercase;margin-bottom:18px;
+    }
+    .wl-title{font-family:'Cormorant Garamond',serif;font-size:36px;font-weight:300;color:var(--white);margin-bottom:10px;}
+    .wl-sub{font-family:'Cormorant Garamond',serif;font-size:14px;font-style:italic;color:var(--grey);line-height:1.8;}
 
-    /* ── WAITLIST / INVITATION ── */
-    .waitlist-page{padding:0 20px;}
-    .wl-hero{text-align:center;padding:40px 0 28px;border-bottom:1px solid rgba(184,150,46,0.08);}
-    .wl-badge{display:inline-block;font-size:8px;letter-spacing:4px;color:var(--black);background:var(--gold);padding:5px 14px;text-transform:uppercase;margin-bottom:20px;}
-    .wl-title{font-family:'Cormorant Garamond',serif;font-size:34px;font-weight:300;color:var(--cream);margin-bottom:10px;letter-spacing:2px;}
-    .wl-sub{font-family:'Cormorant Garamond',serif;font-size:14px;font-style:italic;color:rgba(245,237,216,0.55);line-height:1.8;max-width:320px;margin:0 auto;}
-    .wl-counter{display:flex;justify-content:center;gap:32px;padding:28px 0;border-bottom:1px solid rgba(184,150,46,0.08);}
-    .wl-stat{text-align:center;}
-    .wl-num{font-family:'Cormorant Garamond',serif;font-size:36px;color:var(--gold);}
-    .wl-label{font-size:8px;letter-spacing:3px;color:var(--grey);text-transform:uppercase;}
-    .wl-perks{padding:24px 0;}
-    .wl-perk{display:flex;gap:14px;align-items:flex-start;margin-bottom:20px;}
-    .wl-perk-icon{font-size:20px;flex-shrink:0;}
-    .wl-perk-title{font-size:11px;color:var(--cream);letter-spacing:1px;margin-bottom:3px;}
-    .wl-perk-desc{font-size:9px;color:var(--grey);line-height:1.5;}
-    .wl-form{border:1px solid rgba(184,150,46,0.2);padding:24px;margin-bottom:24px;}
-    .wl-form-title{font-family:'Cormorant Garamond',serif;font-size:16px;color:var(--cream);margin-bottom:16px;}
-    .wl-input{width:100%;background:transparent;border:none;border-bottom:1px solid rgba(184,150,46,0.3);color:var(--cream);padding:10px 0;font-family:'Montserrat',sans-serif;font-size:11px;margin-bottom:14px;outline:none;}
-    .wl-input::placeholder{color:var(--grey);font-size:10px;letter-spacing:1px;}
-    .wl-select{width:100%;background:var(--black);border:none;border-bottom:1px solid rgba(184,150,46,0.3);color:var(--grey);padding:10px 0;font-family:'Montserrat',sans-serif;font-size:10px;margin-bottom:20px;outline:none;letter-spacing:1px;}
-    .wl-select option{background:var(--black);}
-    .wl-disclaimer{font-size:8px;color:var(--grey);letter-spacing:1px;text-align:center;margin-top:12px;line-height:1.6;}
+    .wl-stats{
+      display:grid;grid-template-columns:repeat(3,1fr);
+      border-top:1px solid var(--border);
+      border-bottom:1px solid var(--border);
+    }
+    .ws{
+      padding:20px 0;text-align:center;
+      border-right:1px solid var(--border);
+    }
+    .ws:last-child{border-right:none;}
+    .ws-n{font-family:'Cormorant Garamond',serif;font-size:30px;color:var(--gold);}
+    .ws-l{font-size:7px;letter-spacing:3px;color:var(--grey);text-transform:uppercase;margin-top:4px;}
 
-    /* RESERVE */
-    .reserve-intro{padding:32px 20px 20px;text-align:center;}
-    .ri-eye{font-size:8px;letter-spacing:5px;color:var(--gold);text-transform:uppercase;margin-bottom:10px;}
-    .ri-title{font-family:'Cormorant Garamond',serif;font-size:30px;font-weight:300;color:var(--cream);margin-bottom:8px;}
-    .ri-sub{font-family:'Cormorant Garamond',serif;font-size:13px;font-style:italic;color:rgba(245,237,216,0.5);margin-bottom:24px;}
-    .sub-cards{margin:0 20px;display:flex;flex-direction:column;gap:1px;background:rgba(184,150,46,0.1);}
-    .sub-card{background:var(--black);padding:28px 22px;}
-    .sub-card.feat{background:rgba(184,150,46,0.04);}
-    .sub-tier{font-size:8px;letter-spacing:4px;color:var(--gold);text-transform:uppercase;margin-bottom:12px;}
-    .sub-name{font-family:'Cormorant Garamond',serif;font-size:24px;color:var(--cream);margin-bottom:6px;}
-    .sub-price{font-family:'Cormorant Garamond',serif;font-size:36px;color:var(--gold);margin-bottom:20px;}
-    .sub-price span{font-size:12px;color:var(--grey);font-family:'Montserrat',sans-serif;}
+    .wl-perks{padding:24px 24px 0;}
+    .wp{
+      display:flex;gap:16px;padding:16px 0;
+      border-bottom:1px solid var(--border);
+    }
+    .wp:last-child{border-bottom:none;}
+    .wp-line{width:1px;background:var(--gold);flex-shrink:0;opacity:0.4;}
+    .wp-t{font-size:10px;color:var(--white);letter-spacing:1px;margin-bottom:4px;}
+    .wp-d{font-size:9px;color:var(--grey);line-height:1.6;}
+
+    .wl-form{padding:24px;border-top:1px solid var(--border);}
+    .wf-title{font-family:'Cormorant Garamond',serif;font-size:18px;color:var(--white);margin-bottom:18px;}
+    .sel-inp{
+      width:100%;background:var(--black);border:none;
+      border-bottom:1px solid var(--border);
+      color:var(--grey);padding:10px 0;
+      font-family:'Montserrat',sans-serif;font-size:9px;
+      letter-spacing:1px;margin-bottom:20px;outline:none;
+    }
+    .sel-inp option{background:var(--black);}
+    .wl-disc{font-size:8px;color:var(--grey);letter-spacing:1px;text-align:center;margin-top:12px;line-height:1.7;}
+
+    /* ══════════════════
+       RESERVE
+    ══════════════════ */
+    .res-hero{padding:36px 24px 24px;text-align:center;border-bottom:1px solid var(--border);}
+    .sub-grid{display:flex;flex-direction:column;gap:1px;background:var(--border);margin:0 24px 24px;}
+    .sub-card{background:var(--black);padding:28px 24px;}
+    .sub-card.feat{background:rgba(184,150,46,0.03);}
+    .sub-tier{font-size:7px;letter-spacing:4px;color:var(--gold);text-transform:uppercase;margin-bottom:12px;}
+    .sub-name{font-family:'Cormorant Garamond',serif;font-size:24px;color:var(--white);margin-bottom:8px;}
+    .sub-price{font-family:'Cormorant Garamond',serif;font-size:38px;color:var(--gold);margin-bottom:20px;}
+    .sub-price span{font-size:11px;color:var(--grey);font-family:'Montserrat',sans-serif;}
     .sub-list{list-style:none;margin-bottom:24px;}
-    .sub-list li{font-size:10px;color:rgba(245,237,216,0.6);padding:9px 0;border-bottom:1px solid rgba(245,237,216,0.06);}
+    .sub-list li{font-size:9px;letter-spacing:1px;color:var(--grey);padding:9px 0;border-bottom:1px solid var(--border);}
     .sub-list li::before{content:"— ";color:var(--gold);}
 
-    /* PROFILE */
-    .prof-head{display:flex;align-items:center;gap:16px;padding:24px 20px;border-bottom:1px solid rgba(184,150,46,0.08);}
-    .prof-av{width:52px;height:52px;border-radius:50%;background:rgba(184,150,46,0.1);border:1px solid rgba(184,150,46,0.3);display:flex;align-items:center;justify-content:center;font-size:22px;flex-shrink:0;}
-    .prof-name{font-family:'Cormorant Garamond',serif;font-size:20px;color:var(--cream);margin-bottom:3px;}
-    .prof-tag{font-size:8px;letter-spacing:3px;color:var(--gold);}
-    .prof-sec{margin:16px 20px;border:1px solid rgba(184,150,46,0.12);}
-    .prof-sec-title{font-size:8px;letter-spacing:4px;color:var(--gold);text-transform:uppercase;padding:12px 16px;border-bottom:1px solid rgba(184,150,46,0.08);}
-    .prof-row{display:flex;justify-content:space-between;padding:12px 16px;border-bottom:1px solid rgba(184,150,46,0.06);}
-    .prof-row:last-child{border-bottom:none;}
-    .pr-label{font-size:9px;color:var(--grey);letter-spacing:1px;}
-    .pr-val{font-size:10px;color:var(--cream);text-align:right;}
+    /* ══════════════════
+       PROFILE
+    ══════════════════ */
+    .prof-head{display:flex;align-items:center;gap:18px;padding:24px;border-bottom:1px solid var(--border);}
+    .prof-av{
+      width:48px;height:48px;border-radius:50%;
+      border:1px solid var(--gold);
+      display:flex;align-items:center;justify-content:center;
+      font-family:'Cormorant Garamond',serif;font-size:18px;color:var(--gold);
+    }
+    .prof-name{font-family:'Cormorant Garamond',serif;font-size:20px;color:var(--white);margin-bottom:3px;}
+    .prof-tag{font-size:7px;letter-spacing:4px;color:var(--gold);text-transform:uppercase;}
+    .psec{margin:16px 24px;border:1px solid var(--border);}
+    .psec-title{font-size:7px;letter-spacing:4px;color:var(--gold);text-transform:uppercase;padding:12px 16px;border-bottom:1px solid var(--border);}
+    .prow{display:flex;justify-content:space-between;padding:12px 16px;border-bottom:1px solid var(--border);}
+    .prow:last-child{border-bottom:none;}
+    .pr-l{font-size:8px;color:var(--grey);letter-spacing:1px;}
+    .pr-v{font-size:9px;color:var(--cream);text-align:right;}
 
-    /* TOAST */
-    .toast{position:fixed;bottom:80px;left:50%;transform:translateX(-50%);background:var(--gold);color:var(--black);padding:12px 20px;font-size:9px;letter-spacing:2px;text-transform:uppercase;display:none;z-index:999;white-space:nowrap;max-width:90%;}
+    /* ══════════════════
+       SHEET
+    ══════════════════ */
+    .overlay{
+      position:fixed;inset:0;background:rgba(0,0,0,0.75);
+      z-index:300;display:none;align-items:flex-end;justify-content:center;
+    }
+    .overlay.show{display:flex;}
+    .sheet{
+      background:#0C0C0C;border-top:1px solid var(--border);
+      padding:28px 24px 36px;width:100%;max-width:460px;
+      animation:up 0.3s ease;position:relative;
+    }
+    @keyframes up{from{transform:translateY(100%);}to{transform:translateY(0);}}
+    .sh-close{position:absolute;top:18px;right:22px;background:none;border:none;color:var(--grey);font-size:14px;cursor:pointer;letter-spacing:2px;font-family:'Montserrat',sans-serif;}
+    .sh-title{font-family:'Cormorant Garamond',serif;font-size:22px;color:var(--white);margin-bottom:3px;}
+    .sh-sub{font-size:8px;color:var(--grey);letter-spacing:2px;text-transform:uppercase;margin-bottom:20px;}
+    .sh-row{display:flex;justify-content:space-between;padding:10px 0;border-bottom:1px solid var(--border);}
+    .sh-lbl{font-size:8px;color:var(--grey);letter-spacing:2px;text-transform:uppercase;}
+    .sh-val{font-size:10px;color:var(--cream);}
+    .sh-price{font-family:'Cormorant Garamond',serif;font-size:32px;color:var(--gold);text-align:center;padding:18px 0 14px;}
+    .sh-toggle{
+      display:flex;align-items:center;gap:12px;
+      padding:12px 0;border-bottom:1px solid var(--border);
+      cursor:pointer;
+    }
+    .tbox{
+      width:16px;height:16px;border:1px solid var(--border);
+      display:flex;align-items:center;justify-content:center;
+      flex-shrink:0;transition:all 0.2s;font-size:10px;
+    }
+    .tbox.on{background:var(--gold);border-color:var(--gold);color:var(--black);}
+    .sh-toggle-lbl{font-size:9px;color:var(--cream);letter-spacing:1px;}
 
-    /* SHEET */
-    .sheet-overlay{position:fixed;inset:0;background:rgba(0,0,0,0.7);z-index:300;display:none;align-items:flex-end;justify-content:center;}
-    .sheet-overlay.show{display:flex;}
-    .sheet{background:#0F0F0F;border-top:1px solid rgba(184,150,46,0.3);padding:28px 24px 32px;width:100%;max-width:480px;animation:slideUp 0.3s ease;position:relative;}
-    @keyframes slideUp{from{transform:translateY(100%);}to{transform:translateY(0);}}
-    .sheet-title{font-family:'Cormorant Garamond',serif;font-size:22px;color:var(--cream);margin-bottom:4px;}
-    .sheet-sub{font-size:9px;color:var(--grey);letter-spacing:1px;margin-bottom:20px;}
-    .sheet-row{display:flex;justify-content:space-between;align-items:center;padding:10px 0;border-bottom:1px solid rgba(184,150,46,0.07);}
-    .sheet-label{font-size:9px;color:var(--grey);letter-spacing:1px;text-transform:uppercase;}
-    .sheet-val{font-size:11px;color:var(--cream);}
-    .sheet-price{font-family:'Cormorant Garamond',serif;font-size:28px;color:var(--gold);text-align:center;margin:16px 0;}
-    .sheet-close{position:absolute;top:16px;right:20px;background:none;border:none;color:var(--grey);font-size:18px;cursor:pointer;}
-    /* Gift toggle in sheet */
-    .sheet-gift-toggle{display:flex;align-items:center;gap:10px;padding:12px 0;border-bottom:1px solid rgba(184,150,46,0.07);cursor:pointer;}
-    .toggle-box{width:18px;height:18px;border:1px solid rgba(184,150,46,0.4);display:flex;align-items:center;justify-content:center;flex-shrink:0;}
-    .toggle-box.checked{background:var(--gold);border-color:var(--gold);}
-    .toggle-label{font-size:10px;color:var(--cream);letter-spacing:1px;}
+    /* ── TOAST ── */
+    .toast{
+      position:fixed;bottom:80px;left:50%;transform:translateX(-50%);
+      background:var(--gold);color:var(--black);
+      padding:12px 20px;font-size:8px;letter-spacing:3px;text-transform:uppercase;
+      display:none;z-index:999;white-space:nowrap;
+    }
+
+    /* ── DIVIDER ── */
+    .divider{height:1px;background:var(--border);margin:0 24px;}
   </style>
 </head>
 <body>
 
 <!-- ══ HOME ══ -->
 <div class="page active" id="page-home">
-  <div class="tb"><div class="logo">ORIGEM</div><div class="tb-right">Guten Tag, Patrick</div></div>
-  <div class="home-hero">
-    <div class="home-eye">Reserve Member</div>
-    <div class="home-title">ORIGEM</div>
-    <div class="home-sub">Jede Bohne hat eine Geschichte.<br>Jede Röstung ist deine.</div>
-    <button class="btn-gold" style="max-width:260px;" onclick="goTo('page-beans')">Jetzt bestellen →</button>
+  <div class="tb">
+    <div class="logo">ORIGEM</div>
+    <div class="tb-r">Patrick Poli</div>
   </div>
 
-  <!-- Concierge Bar -->
-  <div style="padding:16px 20px 0;">
-    <div class="concierge-bar" onclick="openConcierge()">
-      <div class="cb-left">
-        <div class="cb-dot"></div>
+  <div class="home-hero">
+    <div class="eyebrow">Reserve Member</div>
+    <div class="home-title">ORIGEM</div>
+    <div class="home-sub">Jede Bohne hat eine Geschichte.<br>Jede Röstung ist deine.</div>
+    <button class="btn btn-solid" style="max-width:240px;margin:0 auto;" onclick="goTo('page-beans')">Jetzt bestellen</button>
+  </div>
+
+  <!-- Concierge -->
+  <div style="padding:20px 24px 0;">
+    <div class="concierge" onclick="openSheet('concierge')">
+      <div style="display:flex;align-items:center;">
+        <div class="c-dot"></div>
         <div>
-          <div class="cb-title">Ihr persönlicher Kaffee-Sommelier</div>
-          <div class="cb-sub">Jetzt verfügbar · Mo–Sa 8–20 Uhr</div>
+          <div class="c-title">Ihr persönlicher Kaffee-Sommelier</div>
+          <div class="c-sub">Verfügbar · Mo–Sa 8–20 Uhr</div>
         </div>
       </div>
-      <button class="cb-btn">Kontakt</button>
+      <div style="font-size:9px;color:var(--gold);letter-spacing:1px;">Kontakt →</div>
     </div>
   </div>
 
   <!-- Today's pick -->
-  <div style="padding:20px 20px 0;"><div style="font-size:8px;letter-spacing:4px;color:var(--gold);text-transform:uppercase;margin-bottom:12px;">✦ KI-Empfehlung für heute</div></div>
-  <div class="todays-pick">
-    <div class="pick-eye">Rarität des Monats</div>
-    <div class="pick-body">
-      <div class="pick-left">
-        <div class="pick-origin">🇾🇪 Yemen · Haraz</div>
+  <div class="pick">
+    <div class="pick-label">KI-Empfehlung · Heute</div>
+    <div class="pick-row">
+      <div>
+        <div class="pick-origin">Yemen · Haraz</div>
         <div class="pick-name">Al Hamdani</div>
         <div class="pick-notes">Schokolade · Wein · Tabak</div>
       </div>
       <div style="text-align:right;">
         <div class="pick-price">CHF 78</div>
-        <button class="btn-small" onclick="openSheet('Al Hamdani','🇾🇪 Yemen · Haraz','CHF 78','Dunkle Schokolade · Wein · Tabak')">Kaufen</button>
+        <button class="btn-inline" onclick="openSheet('order','Al Hamdani','Yemen · Haraz','CHF 78','Schokolade · Wein · Tabak')">Kaufen</button>
       </div>
     </div>
   </div>
 
   <!-- Quickstart -->
-  <div class="qs-grid">
-    <div class="qs-card" onclick="goTo('page-beans')"><div class="qs-icon">☕</div><div class="qs-label">Bestellen</div><div class="qs-text">Bohne & Röstung wählen</div></div>
-    <div class="qs-card" onclick="goTo('page-gift')"><div class="qs-icon">🎁</div><div class="qs-label">Verschenken</div><div class="qs-text">Premium Gift Box</div></div>
-    <div class="qs-card" onclick="goTo('page-reserve')"><div class="qs-icon">✦</div><div class="qs-label">Abo</div><div class="qs-text">The Reserve monatlich</div></div>
-    <div class="qs-card" onclick="goTo('page-waitlist')"><div class="qs-icon">🔒</div><div class="qs-label">Exklusiv</div><div class="qs-text">Invitation Only Liste</div></div>
+  <div style="padding:0 24px;margin-bottom:4px;"><div class="eyebrow">Menü</div></div>
+  <div class="qs" style="margin-top:12px;">
+    <div class="qs-item" onclick="goTo('page-beans')">
+      <div class="qs-num">01</div>
+      <div class="qs-label">Bestellen</div>
+      <div class="qs-text">Bohne & Röstung wählen</div>
+    </div>
+    <div class="qs-item" onclick="goTo('page-gift')">
+      <div class="qs-num">02</div>
+      <div class="qs-label">Verschenken</div>
+      <div class="qs-text">Premium Gift Box</div>
+    </div>
+    <div class="qs-item" onclick="goTo('page-reserve')">
+      <div class="qs-num">03</div>
+      <div class="qs-label">The Reserve</div>
+      <div class="qs-text">Monatliches Abo</div>
+    </div>
+    <div class="qs-item" onclick="goTo('page-waitlist')">
+      <div class="qs-num">04</div>
+      <div class="qs-label">Black Reserve</div>
+      <div class="qs-text">Invitation Only</div>
+    </div>
   </div>
 
-  <!-- Steps -->
-  <div class="steps">
-    <div class="steps-title">So funktioniert ORIGEM</div>
-    <div class="step"><div class="step-num">1</div><div><div class="step-title">Profil & Auswahl</div><div class="step-desc">KI ermittelt deinen Geschmack, du wählst Bohne & Röstgrad</div></div></div>
-    <div class="step-line"></div>
-    <div class="step"><div class="step-num">2</div><div><div class="step-title">Frisch geröstet</div><div class="step-desc">Jede Bestellung wird individuell geröstet</div></div></div>
-    <div class="step-line"></div>
-    <div class="step"><div class="step-num">3</div><div><div class="step-title">In 48h geliefert</div><div class="step-desc">Mit Farmer-Story & Herkunft</div></div></div>
+  <!-- How it works -->
+  <div class="how">
+    <div class="how-title">So funktioniert ORIGEM</div>
+    <div class="how-step"><div class="how-n">I</div><div><div class="how-t">Bohne & Röstgrad</div><div class="how-d">Single Origin, individuell auf Bestellung geröstet</div></div></div>
+    <div class="how-step"><div class="how-n">II</div><div><div class="how-t">48h Lieferung</div><div class="how-d">Frisch geröstet, mit Farmer-Story & Herkunft</div></div></div>
+    <div class="how-step"><div class="how-n">III</div><div><div class="how-t">KI lernt mit</div><div class="how-d">Jede Bestellung verfeinert Ihr Geschmacksprofil</div></div></div>
   </div>
   <div style="height:24px;"></div>
 </div>
 
 <!-- ══ BEANS ══ -->
 <div class="page" id="page-beans">
-  <div class="tb"><div class="logo">ORIGEM</div><div class="tb-right">Kollektion</div></div>
-  <div class="filter-bar">
+  <div class="tb"><div class="logo">ORIGEM</div><div class="tb-r">Kollektion</div></div>
+  <div class="fbar">
     <button class="fb active" onclick="filterBeans('all',this)">Alle</button>
     <button class="fb" onclick="filterBeans('fruity',this)">Fruchtig</button>
     <button class="fb" onclick="filterBeans('chocolate',this)">Schokolade</button>
-    <button class="fb" onclick="filterBeans('rare',this)">Rarität ✦</button>
+    <button class="fb" onclick="filterBeans('rare',this)">Rarität</button>
     <button class="fb" onclick="filterBeans('light',this)">Light Roast</button>
   </div>
-  <div class="bean-list" id="bean-list">
+  <div class="blist" id="blist">
     <div class="bcard" data-tags="fruity light">
-      <div class="bcard-top">
-        <div class="bcard-meta"><div class="bcard-country">🇪🇹 Äthiopien · Yirgacheffe</div></div>
-        <div class="bcard-name">Halo Beriti</div>
-        <div class="bcard-tasting">Jasmin · Bergamotte · Reife Pfirsich</div>
-        <div style="font-size:8px;letter-spacing:2px;color:var(--grey);margin-bottom:8px;text-transform:uppercase;">Röstgrad</div>
-        <div class="roast-pick" id="rp1">
-          <div class="rp sel" onclick="selRoast('rp1',this,'Light')">Light</div>
-          <div class="rp" onclick="selRoast('rp1',this,'Medium')">Medium</div>
-          <div class="rp" onclick="selRoast('rp1',this,'Dark')">Dark</div>
+      <div class="bcard-inner">
+        <div class="bc-top"><div class="bc-origin">Äthiopien · Yirgacheffe</div></div>
+        <div class="bc-name">Halo Beriti</div>
+        <div class="bc-taste">Jasmin · Bergamotte · Reife Pfirsich</div>
+        <div class="roast-row">
+          <div class="roast-lbl">Röstgrad</div>
+          <div class="roast-opts" id="rp1">
+            <div class="rp sel" onclick="selRoast('rp1',this,'Light')">Light</div>
+            <div class="rp" onclick="selRoast('rp1',this,'Medium')">Medium</div>
+            <div class="rp" onclick="selRoast('rp1',this,'Dark')">Dark</div>
+          </div>
         </div>
       </div>
-      <div class="bcard-footer">
-        <div class="bcard-price">CHF 48 <span>/ 200g</span></div>
-        <button class="btn-small" onclick="openSheet('Halo Beriti','🇪🇹 Äthiopien · Yirgacheffe','CHF 48','Jasmin · Bergamotte · Pfirsich')">In den Warenkorb</button>
+      <div class="bc-footer">
+        <div class="bc-price">CHF 48 <span>/ 200g</span></div>
+        <button class="btn-inline" onclick="openSheet('order','Halo Beriti','Äthiopien · Yirgacheffe','CHF 48','Jasmin · Bergamotte · Pfirsich')">In den Warenkorb</button>
       </div>
     </div>
     <div class="bcard" data-tags="chocolate rare">
-      <div class="bcard-top">
-        <div class="bcard-meta"><div class="bcard-country">🇾🇪 Yemen · Haraz</div><div class="bcard-badge">✦ Rarität</div></div>
-        <div class="bcard-name">Al Hamdani</div>
-        <div class="bcard-tasting">Dunkle Schokolade · Wein · Tabak</div>
-        <div style="font-size:8px;letter-spacing:2px;color:var(--grey);margin-bottom:8px;text-transform:uppercase;">Röstgrad</div>
-        <div class="roast-pick" id="rp2">
-          <div class="rp" onclick="selRoast('rp2',this,'Light')">Light</div>
-          <div class="rp sel" onclick="selRoast('rp2',this,'Medium')">Medium</div>
-          <div class="rp" onclick="selRoast('rp2',this,'Dark')">Dark</div>
+      <div class="bcard-inner">
+        <div class="bc-top"><div class="bc-origin">Yemen · Haraz</div><div class="bc-badge">Rarität</div></div>
+        <div class="bc-name">Al Hamdani</div>
+        <div class="bc-taste">Dunkle Schokolade · Wein · Tabak</div>
+        <div class="roast-row">
+          <div class="roast-lbl">Röstgrad</div>
+          <div class="roast-opts" id="rp2">
+            <div class="rp" onclick="selRoast('rp2',this,'Light')">Light</div>
+            <div class="rp sel" onclick="selRoast('rp2',this,'Medium')">Medium</div>
+            <div class="rp" onclick="selRoast('rp2',this,'Dark')">Dark</div>
+          </div>
         </div>
       </div>
-      <div class="bcard-footer">
-        <div class="bcard-price">CHF 78 <span>/ 200g</span></div>
-        <button class="btn-small" onclick="openSheet('Al Hamdani','🇾🇪 Yemen · Haraz','CHF 78','Schokolade · Wein · Tabak')">In den Warenkorb</button>
+      <div class="bc-footer">
+        <div class="bc-price">CHF 78 <span>/ 200g</span></div>
+        <button class="btn-inline" onclick="openSheet('order','Al Hamdani','Yemen · Haraz','CHF 78','Schokolade · Wein · Tabak')">In den Warenkorb</button>
       </div>
     </div>
     <div class="bcard" data-tags="chocolate fruity">
-      <div class="bcard-top">
-        <div class="bcard-meta"><div class="bcard-country">🇨🇴 Kolumbien · Huila</div></div>
-        <div class="bcard-name">Finca La Palma</div>
-        <div class="bcard-tasting">Karamell · Rote Früchte · Sanfte Säure</div>
-        <div style="font-size:8px;letter-spacing:2px;color:var(--grey);margin-bottom:8px;text-transform:uppercase;">Röstgrad</div>
-        <div class="roast-pick" id="rp3">
-          <div class="rp" onclick="selRoast('rp3',this,'Light')">Light</div>
-          <div class="rp sel" onclick="selRoast('rp3',this,'Medium')">Medium</div>
-          <div class="rp" onclick="selRoast('rp3',this,'Dark')">Dark</div>
+      <div class="bcard-inner">
+        <div class="bc-top"><div class="bc-origin">Kolumbien · Huila</div></div>
+        <div class="bc-name">Finca La Palma</div>
+        <div class="bc-taste">Karamell · Rote Früchte · Sanfte Säure</div>
+        <div class="roast-row">
+          <div class="roast-lbl">Röstgrad</div>
+          <div class="roast-opts" id="rp3">
+            <div class="rp" onclick="selRoast('rp3',this,'Light')">Light</div>
+            <div class="rp sel" onclick="selRoast('rp3',this,'Medium')">Medium</div>
+            <div class="rp" onclick="selRoast('rp3',this,'Dark')">Dark</div>
+          </div>
         </div>
       </div>
-      <div class="bcard-footer">
-        <div class="bcard-price">CHF 42 <span>/ 200g</span></div>
-        <button class="btn-small" onclick="openSheet('Finca La Palma','🇨🇴 Kolumbien · Huila','CHF 42','Karamell · Früchte · Säure')">In den Warenkorb</button>
+      <div class="bc-footer">
+        <div class="bc-price">CHF 42 <span>/ 200g</span></div>
+        <button class="btn-inline" onclick="openSheet('order','Finca La Palma','Kolumbien · Huila','CHF 42','Karamell · Früchte · Säure')">In den Warenkorb</button>
       </div>
     </div>
     <div class="bcard" data-tags="fruity rare light">
-      <div class="bcard-top">
-        <div class="bcard-meta"><div class="bcard-country">🇯🇲 Jamaica · Blue Mountain</div><div class="bcard-badge">✦ Rarität</div></div>
-        <div class="bcard-name">Wallenford Estate</div>
-        <div class="bcard-tasting">Mild · Nuss · Zitrus · Seidig</div>
-        <div style="font-size:8px;letter-spacing:2px;color:var(--grey);margin-bottom:8px;text-transform:uppercase;">Röstgrad</div>
-        <div class="roast-pick" id="rp4">
-          <div class="rp sel" onclick="selRoast('rp4',this,'Light')">Light</div>
-          <div class="rp" onclick="selRoast('rp4',this,'Medium')">Medium</div>
-          <div class="rp" onclick="selRoast('rp4',this,'Dark')">Dark</div>
+      <div class="bcard-inner">
+        <div class="bc-top"><div class="bc-origin">Jamaica · Blue Mountain</div><div class="bc-badge">Rarität</div></div>
+        <div class="bc-name">Wallenford Estate</div>
+        <div class="bc-taste">Mild · Nuss · Zitrus · Seidig</div>
+        <div class="roast-row">
+          <div class="roast-lbl">Röstgrad</div>
+          <div class="roast-opts" id="rp4">
+            <div class="rp sel" onclick="selRoast('rp4',this,'Light')">Light</div>
+            <div class="rp" onclick="selRoast('rp4',this,'Medium')">Medium</div>
+            <div class="rp" onclick="selRoast('rp4',this,'Dark')">Dark</div>
+          </div>
         </div>
       </div>
-      <div class="bcard-footer">
-        <div class="bcard-price">CHF 95 <span>/ 200g</span></div>
-        <button class="btn-small" onclick="openSheet('Wallenford Estate','🇯🇲 Jamaica · Blue Mountain','CHF 95','Mild · Nuss · Zitrus')">In den Warenkorb</button>
+      <div class="bc-footer">
+        <div class="bc-price">CHF 95 <span>/ 200g</span></div>
+        <button class="btn-inline" onclick="openSheet('order','Wallenford Estate','Jamaica · Blue Mountain','CHF 95','Mild · Nuss · Zitrus')">In den Warenkorb</button>
       </div>
     </div>
   </div>
@@ -351,151 +614,119 @@
 
 <!-- ══ CART ══ -->
 <div class="page" id="page-cart">
-  <div class="tb"><div class="logo">ORIGEM</div><div class="tb-right" id="cart-count">0 Artikel</div></div>
+  <div class="tb"><div class="logo">ORIGEM</div><div class="tb-r" id="cart-count">Warenkorb</div></div>
   <div id="cart-content"></div>
+</div>
+
+<!-- ══ GIFTING ══ -->
+<div class="page" id="page-gift">
+  <div class="tb"><div class="logo">ORIGEM</div><div class="tb-r">Gift Box</div></div>
+  <div class="gift-hero">
+    <div class="eyebrow" style="margin-bottom:12px;">Für besondere Menschen</div>
+    <div class="display" style="font-size:30px;margin-bottom:10px;">Premium Gift Box</div>
+    <div class="italic" style="font-size:13px;line-height:1.8;">Handgeschriebene Karte. Schwarze Box.<br>Farmer-Portrait inklusive.</div>
+  </div>
+  <div class="gift-options">
+    <div style="font-size:8px;letter-spacing:4px;color:var(--gold);text-transform:uppercase;margin-bottom:14px;">Selektion wählen</div>
+    <div class="go-item" onclick="selectGift(this,'Al Hamdani · Yemen','CHF 78')">
+      <div><div class="go-name">Al Hamdani</div><div class="go-origin">Yemen · Haraz · Rarität</div></div>
+      <div class="go-price">CHF 78</div>
+    </div>
+    <div class="go-item" onclick="selectGift(this,'Halo Beriti · Äthiopien','CHF 48')">
+      <div><div class="go-name">Halo Beriti</div><div class="go-origin">Äthiopien · Yirgacheffe</div></div>
+      <div class="go-price">CHF 48</div>
+    </div>
+    <div class="go-item" onclick="selectGift(this,'Duo — Yemen & Jamaica','CHF 178')">
+      <div>
+        <div class="bc-badge" style="margin-bottom:6px;">Bestseller</div>
+        <div class="go-name">Duo Rarität</div>
+        <div class="go-origin">Yemen + Jamaica · 2 × 200g</div>
+      </div>
+      <div class="go-price">CHF 178</div>
+    </div>
+  </div>
+  <div class="gift-form" id="gift-form">
+    <div class="gf-title">Persönliche Notiz</div>
+    <input class="inp" placeholder="Name des Empfängers">
+    <input class="inp" placeholder="E-Mail für digitale Karte" type="email">
+    <textarea class="textarea" placeholder="Ihre persönliche Nachricht..."></textarea>
+    <div style="font-size:8px;letter-spacing:2px;color:var(--grey);margin-bottom:14px;">AUSWAHL: <span id="gift-sel" style="color:var(--gold);">—</span></div>
+    <button class="btn btn-solid" onclick="sendGift()">Gift Box bestellen</button>
+  </div>
+  <div style="height:24px;"></div>
+</div>
+
+<!-- ══ BLACK RESERVE ══ -->
+<div class="page" id="page-waitlist">
+  <div class="tb"><div class="logo">ORIGEM</div><div class="tb-r">Black Reserve</div></div>
+  <div class="wl-hero">
+    <div class="wl-badge">Invitation Only</div>
+    <div class="wl-title">The Black Reserve</div>
+    <div class="wl-sub">Das exklusivste Kaffee-Erlebnis der Welt.<br>50 Mitglieder weltweit.</div>
+  </div>
+  <div class="wl-stats">
+    <div class="ws"><div class="ws-n" id="wl-spots">7</div><div class="ws-l">Plätze frei</div></div>
+    <div class="ws"><div class="ws-n">43</div><div class="ws-l">Mitglieder</div></div>
+    <div class="ws"><div class="ws-n" id="wl-wait">218</div><div class="ws-l">Warteliste</div></div>
+  </div>
+  <div class="wl-perks">
+    <div style="font-size:8px;letter-spacing:4px;color:var(--gold);text-transform:uppercase;margin-bottom:4px;">Mitglieder-Vorteile</div>
+    <div class="wp"><div class="wp-line"></div><div><div class="wp-t">Auction Lots — First Access</div><div class="wp-d">Zugang zu den teuersten Kaffees der Welt vor dem Markt</div></div></div>
+    <div class="wp"><div class="wp-line"></div><div><div class="wp-t">Farm Visits</div><div class="wp-d">Jährliche Einladung zur Ernte direkt beim Farmer</div></div></div>
+    <div class="wp"><div class="wp-line"></div><div><div class="wp-t">Dedicated Sommelier</div><div class="wp-d">Persönlicher Ansprechpartner, 7 Tage, WhatsApp & Telefon</div></div></div>
+    <div class="wp"><div class="wp-line"></div><div><div class="wp-t">Corporate Gifting Service</div><div class="wp-d">Branded Gift Boxes mit Ihrem Logo für Kunden und Events</div></div></div>
+  </div>
+  <div class="wl-form">
+    <div class="wf-title">Für Warteliste bewerben</div>
+    <input class="inp" placeholder="Vollständiger Name">
+    <input class="inp" placeholder="E-Mail Adresse" type="email">
+    <input class="inp" placeholder="Unternehmen (optional)">
+    <select class="sel-inp">
+      <option value="" disabled selected>Wie wurden Sie auf ORIGEM aufmerksam?</option>
+      <option>Empfehlung eines Mitglieds</option>
+      <option>Private Banking / Wealth Management</option>
+      <option>Hotel / Club</option>
+      <option>Andere</option>
+    </select>
+    <button class="btn btn-solid" onclick="joinWaitlist()">Bewerben</button>
+    <div class="wl-disc">Bewerbungen werden innerhalb von 72h geprüft.<br>Mitgliedschaft auf Einladung oder nach Prüfung.</div>
+  </div>
+  <div style="height:24px;"></div>
 </div>
 
 <!-- ══ RESERVE ══ -->
 <div class="page" id="page-reserve">
   <div class="tb"><div class="logo">ORIGEM</div></div>
-  <div class="reserve-intro">
-    <div class="ri-eye">Exklusiv</div>
-    <div class="ri-title">The Reserve</div>
-    <div class="ri-sub">Monatliche Rarität — KI kuratiert, frisch geröstet.</div>
+  <div class="res-hero">
+    <div class="eyebrow" style="margin-bottom:10px;">Exklusiv</div>
+    <div class="display" style="font-size:30px;margin-bottom:8px;">The Reserve</div>
+    <div class="italic" style="font-size:13px;">Monatliche Rarität — KI kuratiert.</div>
   </div>
-  <div class="sub-cards">
+  <div class="sub-grid">
     <div class="sub-card">
       <div class="sub-tier">Einzelbestellung</div>
       <div class="sub-name">À la carte</div>
       <div class="sub-price">ab CHF 35 <span>/ Beutel</span></div>
       <ul class="sub-list">
         <li>Frisch geröstet auf Bestellung</li>
-        <li>Röst- & Mahlgrad individuell</li>
+        <li>Röst- und Mahlgrad individuell</li>
         <li>Herkunfts-Story inklusive</li>
         <li>Lieferung in 48 Stunden</li>
       </ul>
-      <button class="btn-out" onclick="goTo('page-beans')">Bohnen entdecken</button>
+      <button class="btn btn-ghost" onclick="goTo('page-beans')">Kollektion entdecken</button>
     </div>
     <div class="sub-card feat">
-      <div class="sub-tier">Monatlich · KI-kuratiert</div>
+      <div class="sub-tier">Monatlich — KI-kuratiert</div>
       <div class="sub-name">The Reserve</div>
       <div class="sub-price">CHF 120 <span>/ Monat</span></div>
       <ul class="sub-list">
-        <li>Monatliche Rarität — KI wählt für dich</li>
-        <li>Limited Editions & Micro-Lots</li>
+        <li>Monatliche Rarität — KI wählt für Sie</li>
+        <li>Limited Editions und Micro-Lots</li>
         <li>Auction Coffees weltweit</li>
         <li>Frisch geröstet, 48h Lieferung</li>
         <li>Persönlicher Kaffee-Sommelier</li>
       </ul>
-      <button class="btn-gold" onclick="showToast('Willkommen bei The Reserve! ✦')">Reserve abonnieren</button>
-    </div>
-  </div>
-  <div style="height:24px;"></div>
-</div>
-
-<!-- ══ GIFTING ══ -->
-<div class="page" id="page-gift">
-  <div class="tb"><div class="logo">ORIGEM</div><div class="tb-right">Gift Box</div></div>
-  <div style="padding:32px 20px 20px;text-align:center;background:radial-gradient(ellipse at 50%,rgba(184,150,46,0.07),transparent 65%);border-bottom:1px solid rgba(184,150,46,0.08);">
-    <div style="font-size:8px;letter-spacing:5px;color:var(--gold);text-transform:uppercase;margin-bottom:12px;">Für besondere Menschen</div>
-    <div style="font-family:'Cormorant Garamond',serif;font-size:30px;font-weight:300;color:var(--cream);margin-bottom:10px;">Premium Gift Box</div>
-    <div style="font-family:'Cormorant Garamond',serif;font-size:13px;font-style:italic;color:rgba(245,237,216,0.5);margin-bottom:0;line-height:1.8;">Handgeschriebene Karte. Schwarze Geschenkbox.<br>Farmer-Portrait inklusive. Unvergesslich.</div>
-  </div>
-
-  <!-- Gift options -->
-  <div style="padding:20px;">
-    <div style="font-size:8px;letter-spacing:4px;color:var(--gold);text-transform:uppercase;margin-bottom:14px;">Selektion wählen</div>
-    <div id="gift-beans">
-      <div class="bcard" style="margin:0 0 12px;" onclick="selectGiftBean(this,'Al Hamdani · Yemen','CHF 78')">
-        <div class="bcard-top" style="padding:16px 16px 8px;">
-          <div style="display:flex;justify-content:space-between;align-items:center;">
-            <div>
-              <div class="bcard-country">🇾🇪 Yemen · Haraz</div>
-              <div class="bcard-name" style="font-size:18px;">Al Hamdani ✦</div>
-            </div>
-            <div style="font-family:'Cormorant Garamond',serif;font-size:20px;color:var(--gold);">CHF 78</div>
-          </div>
-        </div>
-      </div>
-      <div class="bcard" style="margin:0 0 12px;" onclick="selectGiftBean(this,'Halo Beriti · Äthiopien','CHF 48')">
-        <div class="bcard-top" style="padding:16px 16px 8px;">
-          <div style="display:flex;justify-content:space-between;align-items:center;">
-            <div>
-              <div class="bcard-country">🇪🇹 Äthiopien · Yirgacheffe</div>
-              <div class="bcard-name" style="font-size:18px;">Halo Beriti</div>
-            </div>
-            <div style="font-family:'Cormorant Garamond',serif;font-size:20px;color:var(--gold);">CHF 48</div>
-          </div>
-        </div>
-      </div>
-      <div class="bcard" style="margin:0 0 20px;" onclick="selectGiftBean(this,'Duo Rarität (Yemen + Jamaica)','CHF 178')">
-        <div class="bcard-top" style="padding:16px 16px 8px;">
-          <div style="display:flex;justify-content:space-between;align-items:center;">
-            <div>
-              <div class="bcard-badge" style="margin-bottom:6px;">Bestseller</div>
-              <div class="bcard-name" style="font-size:18px;">Duo Rarität</div>
-              <div class="bcard-country">Yemen + Jamaica</div>
-            </div>
-            <div style="font-family:'Cormorant Garamond',serif;font-size:20px;color:var(--gold);">CHF 178</div>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <!-- Gift form -->
-    <div class="gift-form" id="gift-form">
-      <div class="gift-form-title">Persönliche Notiz</div>
-      <input class="gift-input" id="gift-recipient" placeholder="Name des Empfängers" type="text">
-      <input class="gift-input" id="gift-email" placeholder="E-Mail für digitale Karte" type="email">
-      <textarea class="gift-textarea" id="gift-msg" placeholder="Ihre persönliche Nachricht..."></textarea>
-      <div style="font-size:8px;letter-spacing:2px;color:var(--grey);margin-bottom:12px;">AUSGEWÄHLT: <span id="gift-selected" style="color:var(--gold);">—</span></div>
-      <button class="btn-gold" onclick="sendGift()">Gift Box bestellen →</button>
-    </div>
-  </div>
-  <div style="height:24px;"></div>
-</div>
-
-<!-- ══ WAITLIST ══ -->
-<div class="page" id="page-waitlist">
-  <div class="tb"><div class="logo">ORIGEM</div><div class="tb-right">Invitation Only</div></div>
-  <div class="waitlist-page">
-    <div class="wl-hero">
-      <div class="wl-badge">Invitation Only</div>
-      <div class="wl-title">The Black Reserve</div>
-      <div class="wl-sub">Das exklusivste Kaffee-Erlebnis der Welt.<br>Nur 50 Mitglieder weltweit.</div>
-    </div>
-
-    <!-- Live counter -->
-    <div class="wl-counter">
-      <div class="wl-stat"><div class="wl-num" id="wl-spots">7</div><div class="wl-label">Plätze frei</div></div>
-      <div class="wl-stat"><div class="wl-num">43</div><div class="wl-label">Mitglieder</div></div>
-      <div class="wl-stat"><div class="wl-num" id="wl-waiting">218</div><div class="wl-label">Auf Warteliste</div></div>
-    </div>
-
-    <!-- Perks -->
-    <div class="wl-perks">
-      <div style="font-size:8px;letter-spacing:4px;color:var(--gold);text-transform:uppercase;margin-bottom:16px;">Mitglieder-Vorteile</div>
-      <div class="wl-perk"><div class="wl-perk-icon">☕</div><div><div class="wl-perk-title">Auction Lots — First Access</div><div class="wl-perk-desc">Zugang zu den weltweit teuersten Kaffees bevor sie öffentlich verfügbar sind</div></div></div>
-      <div class="wl-perk"><div class="wl-perk-icon">✈️</div><div><div class="wl-perk-title">Farm Visits</div><div class="wl-perk-desc">Jährliche Einladung zur Ernte — persönlich beim Farmer, auf eigene Kosten</div></div></div>
-      <div class="wl-perk"><div class="wl-perk-icon">📞</div><div><div class="wl-perk-title">Dedicated Sommelier</div><div class="wl-perk-desc">Persönlicher Ansprechpartner, erreichbar 7 Tage, WhatsApp & Telefon</div></div></div>
-      <div class="wl-perk"><div class="wl-perk-icon">🎁</div><div><div class="wl-perk-title">Corporate Gifting Service</div><div class="wl-perk-desc">Branded Gift Boxes mit Ihrem Logo — für Kunden, Partner, Events</div></div></div>
-    </div>
-
-    <!-- Waitlist form -->
-    <div class="wl-form">
-      <div class="wl-form-title">Für Warteliste bewerben</div>
-      <input class="wl-input" placeholder="Vollständiger Name" type="text">
-      <input class="wl-input" placeholder="E-Mail Adresse" type="email">
-      <input class="wl-input" placeholder="Unternehmen (optional)" type="text">
-      <select class="wl-select">
-        <option value="" disabled selected>Wie sind Sie auf ORIGEM aufmerksam geworden?</option>
-        <option>Empfehlung eines Mitglieds</option>
-        <option>Private Banking / Wealth Management</option>
-        <option>Hotel / Club</option>
-        <option>Andere</option>
-      </select>
-      <button class="btn-gold" onclick="joinWaitlist()">Bewerben →</button>
-      <div class="wl-disclaimer">Bewerbungen werden innerhalb von 72h geprüft.<br>Mitgliedschaft auf Einladung oder nach Prüfung.</div>
+      <button class="btn btn-solid" onclick="showToast('Willkommen bei The Reserve')">Abonnieren</button>
     </div>
   </div>
   <div style="height:24px;"></div>
@@ -505,66 +736,83 @@
 <div class="page" id="page-profile">
   <div class="tb"><div class="logo">ORIGEM</div></div>
   <div class="prof-head">
-    <div class="prof-av">☕</div>
-    <div><div class="prof-name">Patrick Poli</div><div class="prof-tag">RESERVE MEMBER</div></div>
+    <div class="prof-av">P</div>
+    <div><div class="prof-name">Patrick Poli</div><div class="prof-tag">Reserve Member</div></div>
   </div>
-  <div class="prof-sec">
-    <div class="prof-sec-title">Abo — The Reserve</div>
-    <div class="prof-row"><span class="pr-label">Status</span><span class="pr-val" style="color:var(--gold);">Aktiv</span></div>
-    <div class="prof-row"><span class="pr-label">Nächste Lieferung</span><span class="pr-val">01. April 2026</span></div>
-    <div class="prof-row"><span class="pr-label">Dieser Monat</span><span class="pr-val">Al Hamdani · Yemen ✦</span></div>
+  <div class="psec">
+    <div class="psec-title">Abonnement</div>
+    <div class="prow"><span class="pr-l">Status</span><span class="pr-v" style="color:var(--gold);">Aktiv</span></div>
+    <div class="prow"><span class="pr-l">Nächste Lieferung</span><span class="pr-v">01. April 2026</span></div>
+    <div class="prow"><span class="pr-l">Dieser Monat</span><span class="pr-v">Al Hamdani · Yemen</span></div>
   </div>
-  <div class="prof-sec">
-    <div class="prof-sec-title">Bestellhistorie</div>
-    <div id="order-hist"><div style="padding:16px;font-size:10px;color:var(--grey);">Noch keine Bestellungen</div></div>
+  <div class="psec">
+    <div class="psec-title">Bestellhistorie</div>
+    <div id="order-hist"><div style="padding:16px;font-size:9px;color:var(--grey);letter-spacing:1px;">Keine Bestellungen</div></div>
   </div>
   <div style="height:24px;"></div>
 </div>
 
 <!-- ══ BOTTOM NAV ══ -->
 <nav class="bnav">
-  <button class="bi active" onclick="goTo('page-home',this)"><span class="bi-icon">🏠</span>Home</button>
-  <button class="bi" onclick="goTo('page-beans',this)"><span class="bi-icon">☕</span>Bohnen</button>
-  <button class="bi" onclick="goTo('page-cart',this)"><span class="bi-icon">🛒</span>Warenkorb</button>
-  <button class="bi" onclick="goTo('page-gift',this)"><span class="bi-icon">🎁</span>Gift</button>
-  <button class="bi" onclick="goTo('page-waitlist',this)"><span class="bi-icon">🔒</span>Black</button>
-  <button class="bi" onclick="goTo('page-profile',this)"><span class="bi-icon">👤</span>Profil</button>
+  <button class="bi active" onclick="goTo('page-home',this)">
+    <div class="bi-icon"><svg width="16" height="15" viewBox="0 0 16 15" fill="none" stroke="currentColor" stroke-width="1.2"><path d="M1 7L8 1L15 7V14H10V10H6V14H1V7Z"/></svg></div>
+    Home
+  </button>
+  <button class="bi" onclick="goTo('page-beans',this)">
+    <div class="bi-icon"><svg width="15" height="15" viewBox="0 0 15 15" fill="none" stroke="currentColor" stroke-width="1.2"><ellipse cx="7.5" cy="7.5" rx="4" ry="6.5" transform="rotate(30 7.5 7.5)"/><path d="M4 3.5Q7.5 7.5 11 11.5"/></svg></div>
+    Bohnen
+  </button>
+  <button class="bi" onclick="goTo('page-cart',this)">
+    <div class="bi-icon"><svg width="16" height="15" viewBox="0 0 16 15" fill="none" stroke="currentColor" stroke-width="1.2"><path d="M1 1H3L5 10H13L15 4H4"/><circle cx="6" cy="13" r="1"/><circle cx="12" cy="13" r="1"/></svg></div>
+    Warenkorb
+  </button>
+  <button class="bi" onclick="goTo('page-gift',this)">
+    <div class="bi-icon"><svg width="15" height="15" viewBox="0 0 15 15" fill="none" stroke="currentColor" stroke-width="1.2"><rect x="1" y="5" width="13" height="9"/><path d="M1 5H14M7.5 5V14M7.5 5C7.5 5 5 5 5 3C5 1.5 6 1 7.5 1C9 1 10 1.5 10 3C10 5 7.5 5 7.5 5Z"/></svg></div>
+    Gift
+  </button>
+  <button class="bi" onclick="goTo('page-waitlist',this)">
+    <div class="bi-icon"><svg width="13" height="16" viewBox="0 0 13 16" fill="none" stroke="currentColor" stroke-width="1.2"><rect x="1" y="7" width="11" height="8" rx="1"/><path d="M3.5 7V4.5C3.5 2.5 9.5 2.5 9.5 4.5V7"/><circle cx="6.5" cy="11" r="1.2"/></svg></div>
+    Black
+  </button>
+  <button class="bi" onclick="goTo('page-profile',this)">
+    <div class="bi-icon"><svg width="14" height="15" viewBox="0 0 14 15" fill="none" stroke="currentColor" stroke-width="1.2"><circle cx="7" cy="5" r="3"/><path d="M1 14C1 11 3.5 9 7 9C10.5 9 13 11 13 14"/></svg></div>
+    Profil
+  </button>
 </nav>
 
-<!-- ══ QUICK-ADD SHEET ══ -->
-<div class="sheet-overlay" id="sheet" onclick="closeSheet(event)">
+<!-- ══ ORDER SHEET ══ -->
+<div class="overlay" id="sheet-order" onclick="closeOverlay('sheet-order',event)">
   <div class="sheet">
-    <button class="sheet-close" onclick="document.getElementById('sheet').classList.remove('show')">✕</button>
-    <div class="sheet-title" id="sh-name"></div>
-    <div class="sheet-sub" id="sh-origin"></div>
-    <div class="sheet-row"><span class="sheet-label">Geschmack</span><span class="sheet-val" id="sh-notes"></span></div>
-    <div class="sheet-row"><span class="sheet-label">Röstgrad</span><span class="sheet-val" id="sh-roast">Medium Roast</span></div>
-    <div class="sheet-row"><span class="sheet-label">Lieferung</span><span class="sheet-val">48h · Frisch geröstet · Gratis</span></div>
-    <!-- Gift toggle -->
-    <div class="sheet-gift-toggle" onclick="toggleGiftOption()">
-      <div class="toggle-box" id="gift-toggle-box"></div>
-      <span class="toggle-label">🎁 Als Geschenk senden</span>
+    <button class="sh-close" onclick="document.getElementById('sheet-order').classList.remove('show')">Schliessen</button>
+    <div class="sh-title" id="sh-name"></div>
+    <div class="sh-sub" id="sh-origin"></div>
+    <div class="sh-row"><span class="sh-lbl">Aroma</span><span class="sh-val" id="sh-notes"></span></div>
+    <div class="sh-row"><span class="sh-lbl">Röstgrad</span><span class="sh-val">Medium Roast</span></div>
+    <div class="sh-row"><span class="sh-lbl">Lieferung</span><span class="sh-val">48h · Frisch geröstet · Gratis</span></div>
+    <div class="sh-toggle" onclick="toggleGift()">
+      <div class="tbox" id="gift-tbox"></div>
+      <span class="sh-toggle-lbl">Als Geschenk senden</span>
     </div>
-    <div class="sheet-price" id="sh-price"></div>
-    <button class="btn-gold" onclick="confirmAdd()">Jetzt bestellen →</button>
+    <div class="sh-price" id="sh-price"></div>
+    <button class="btn btn-solid" onclick="confirmOrder()">Bestellen</button>
   </div>
 </div>
 
 <!-- ══ CONCIERGE SHEET ══ -->
-<div class="sheet-overlay" id="concierge-sheet" onclick="closeConciergeSheet(event)">
+<div class="overlay" id="sheet-concierge" onclick="closeOverlay('sheet-concierge',event)">
   <div class="sheet">
-    <button class="sheet-close" onclick="document.getElementById('concierge-sheet').classList.remove('show')">✕</button>
-    <div style="display:flex;align-items:center;gap:10px;margin-bottom:16px;">
-      <div class="cb-dot" style="width:10px;height:10px;"></div>
-      <div class="sheet-title" style="margin-bottom:0;">Ihr Kaffee-Sommelier</div>
+    <button class="sh-close" onclick="document.getElementById('sheet-concierge').classList.remove('show')">Schliessen</button>
+    <div style="display:flex;align-items:center;gap:10px;margin-bottom:4px;">
+      <div class="c-dot" style="position:relative;"></div>
+      <div class="sh-title">Kaffee-Sommelier</div>
     </div>
-    <div class="sheet-sub">Persönliche Beratung · Mo–Sa 8–20 Uhr</div>
-    <div class="sheet-row"><span class="sheet-label">WhatsApp</span><span class="sheet-val" style="color:var(--gold);">+41 44 000 00 00</span></div>
-    <div class="sheet-row"><span class="sheet-label">E-Mail</span><span class="sheet-val">sommelier@origem.coffee</span></div>
-    <div class="sheet-row"><span class="sheet-label">Reaktionszeit</span><span class="sheet-val">< 2 Stunden</span></div>
+    <div class="sh-sub">Persönliche Beratung · Mo–Sa 8–20 Uhr</div>
+    <div class="sh-row"><span class="sh-lbl">WhatsApp</span><span class="sh-val" style="color:var(--gold);">+41 44 000 00 00</span></div>
+    <div class="sh-row"><span class="sh-lbl">E-Mail</span><span class="sh-val">sommelier@origem.coffee</span></div>
+    <div class="sh-row"><span class="sh-lbl">Reaktionszeit</span><span class="sh-val">Unter 2 Stunden</span></div>
     <div style="height:20px;"></div>
-    <button class="btn-gold" style="margin-bottom:10px;" onclick="showToast('Verbindung wird aufgebaut...');document.getElementById(\'concierge-sheet\').classList.remove(\'show\')">Per WhatsApp kontaktieren</button>
-    <button class="btn-out" onclick="showToast('E-Mail wird geöffnet...');document.getElementById('concierge-sheet').classList.remove('show')">E-Mail senden</button>
+    <button class="btn btn-solid" style="margin-bottom:10px;" onclick="showToast('WhatsApp wird geöffnet');document.getElementById('sheet-concierge').classList.remove('show')">Per WhatsApp kontaktieren</button>
+    <button class="btn btn-ghost" onclick="showToast('E-Mail wird geöffnet');document.getElementById('sheet-concierge').classList.remove('show')">E-Mail senden</button>
   </div>
 </div>
 
@@ -585,7 +833,7 @@ function filterBeans(tag,btn){
   document.querySelectorAll('.fb').forEach(b=>b.classList.remove('active'));
   btn.classList.add('active');
   document.querySelectorAll('.bcard').forEach(c=>{
-    c.style.display=(tag==='all'||c.dataset.tags&&c.dataset.tags.includes(tag))?'block':'none';
+    c.style.display=(tag==='all'||c.dataset.tags.includes(tag))?'block':'none';
   });
 }
 
@@ -593,103 +841,127 @@ function filterBeans(tag,btn){
 function selRoast(g,el,v){
   document.querySelectorAll('#'+g+' .rp').forEach(r=>r.classList.remove('sel'));
   el.classList.add('sel');
-  document.getElementById('sh-roast').textContent=v+' Roast';
 }
 
-// SHEET
-let sheetItem={},giftMode=false;
-function openSheet(name,origin,price,notes){
-  sheetItem={name,origin,price,notes};
-  document.getElementById('sh-name').textContent=name;
-  document.getElementById('sh-origin').textContent=origin;
-  document.getElementById('sh-notes').textContent=notes;
-  document.getElementById('sh-price').textContent=price;
-  giftMode=false;
-  document.getElementById('gift-toggle-box').classList.remove('checked');
-  document.getElementById('sheet').classList.add('show');
+// SHEETS
+let orderItem={}, giftMode=false;
+function openSheet(type,...args){
+  if(type==='order'){
+    const[name,origin,price,notes]=args;
+    orderItem={name,origin,price,notes};
+    document.getElementById('sh-name').textContent=name;
+    document.getElementById('sh-origin').textContent=origin;
+    document.getElementById('sh-notes').textContent=notes;
+    document.getElementById('sh-price').textContent=price;
+    giftMode=false;
+    document.getElementById('gift-tbox').classList.remove('on');
+    document.getElementById('sheet-order').classList.add('show');
+  } else if(type==='concierge'){
+    document.getElementById('sheet-concierge').classList.add('show');
+  }
 }
-function closeSheet(e){if(e.target===document.getElementById('sheet'))document.getElementById('sheet').classList.remove('show');}
-function toggleGiftOption(){
+function closeOverlay(id,e){
+  if(e.target===document.getElementById(id))
+    document.getElementById(id).classList.remove('show');
+}
+function toggleGift(){
   giftMode=!giftMode;
-  document.getElementById('gift-toggle-box').classList.toggle('checked',giftMode);
+  document.getElementById('gift-tbox').classList.toggle('on',giftMode);
 }
-function confirmAdd(){
+function confirmOrder(){
   if(giftMode){
-    document.getElementById('sheet').classList.remove('show');
+    document.getElementById('sheet-order').classList.remove('show');
     goTo('page-gift');
-    showToast('Als Geschenk konfigurieren →');
+    showToast('Geschenk konfigurieren');
     return;
   }
-  addToCart(sheetItem.name,sheetItem.price,sheetItem.origin,document.getElementById('sh-roast').textContent);
-  document.getElementById('sheet').classList.remove('show');
-  showToast('✓ Hinzugefügt');
+  const roast = document.querySelector('#sheet-order .sh-val:nth-child(2)');
+  addToCart(orderItem.name,orderItem.price,orderItem.origin,'Medium Roast');
+  document.getElementById('sheet-order').classList.remove('show');
+  showToast('Hinzugefügt');
 }
 
-// CONCIERGE
-function openConcierge(){document.getElementById('concierge-sheet').classList.add('show');}
-function closeConciergeSheet(e){if(e.target===document.getElementById('concierge-sheet'))document.getElementById('concierge-sheet').classList.remove('show');}
-
 // GIFT
-let selectedGiftBean='',selectedGiftPrice='';
-function selectGiftBean(el,bean,price){
-  document.querySelectorAll('#gift-beans .bcard').forEach(c=>c.style.borderColor='rgba(184,150,46,0.15)');
-  el.style.borderColor='var(--gold)';
-  selectedGiftBean=bean; selectedGiftPrice=price;
-  document.getElementById('gift-selected').textContent=bean+' — '+price;
+let giftSel='';
+function selectGift(el,name,price){
+  document.querySelectorAll('.go-item').forEach(i=>i.classList.remove('sel'));
+  el.classList.add('sel');
+  giftSel=name+' — '+price;
+  document.getElementById('gift-sel').textContent=giftSel;
   document.getElementById('gift-form').classList.add('show');
 }
 function sendGift(){
-  if(!selectedGiftBean){showToast('Bitte Selektion wählen');return;}
-  showToast('🎁 Gift Box bestellt — wird vorbereitet!');
+  if(!giftSel){showToast('Bitte Selektion wählen');return;}
+  showToast('Gift Box bestellt');
   document.getElementById('gift-form').classList.remove('show');
-  document.querySelectorAll('#gift-beans .bcard').forEach(c=>c.style.borderColor='rgba(184,150,46,0.15)');
+  document.querySelectorAll('.go-item').forEach(i=>i.classList.remove('sel'));
+  giftSel='';
 }
 
 // WAITLIST
-let wlSpots=7, wlWaiting=218;
+let wlWait=218;
 function joinWaitlist(){
-  wlWaiting++;
-  document.getElementById('wl-waiting').textContent=wlWaiting;
-  showToast('✓ Bewerbung eingegangen — wir melden uns!');
+  wlWait++;
+  document.getElementById('wl-wait').textContent=wlWait;
+  showToast('Bewerbung eingegangen');
 }
-// Simulate live activity
-setInterval(()=>{
-  wlWaiting+=Math.random()>0.7?1:0;
-  document.getElementById('wl-waiting').textContent=wlWaiting;
-},8000);
+setInterval(()=>{if(Math.random()>0.6){wlWait++;document.getElementById('wl-wait').textContent=wlWait;}},9000);
 
 // CART
 let cart=[];
 function addToCart(name,price,origin,roast){
   cart.push({name,price,origin,roast});
   document.getElementById('cart-count').textContent=cart.length+' Artikel';
-  updateOrderHist();
+  updateHist();
 }
-function removeItem(i){cart.splice(i,1);document.getElementById('cart-count').textContent=cart.length+' Artikel';renderCart();updateOrderHist();}
+function removeItem(i){
+  cart.splice(i,1);
+  document.getElementById('cart-count').textContent=cart.length||'Warenkorb';
+  renderCart();updateHist();
+}
 function renderCart(){
   const c=document.getElementById('cart-content');
-  if(cart.length===0){
-    c.innerHTML=`<div class="cart-empty"><div class="ce-icon">☕</div><div class="ce-text">Noch leer</div><button class="btn-out" style="max-width:220px;margin:0 auto;" onclick="goTo('page-beans')">Zur Kollektion</button></div>`;
+  if(!cart.length){
+    c.innerHTML=`<div class="cart-empty"><div class="ce-text">Noch leer</div><button class="btn btn-ghost" style="max-width:200px;margin:0 auto;" onclick="goTo('page-beans')">Zur Kollektion</button></div>`;
     return;
   }
-  let html=`<div style="padding:20px 20px 0;"><div class="co-steps"><div class="co-step done"><div class="co-step-dot">✓</div><div class="co-step-label">Auswahl</div></div><div class="co-step active"><div class="co-step-dot">2</div><div class="co-step-label">Prüfen</div></div><div class="co-step"><div class="co-step-dot">3</div><div class="co-step-label">Zahlung</div></div><div class="co-step"><div class="co-step-dot">4</div><div class="co-step-label">Bestätigt</div></div></div></div>`;
-  html+=cart.map((item,i)=>`<div class="cart-item"><div><div class="ci-name">${item.name}</div><div class="ci-detail">${item.origin} · ${item.roast} · 200g</div></div><div class="ci-right"><div class="ci-price">${item.price}</div><button class="ci-rm" onclick="removeItem(${i})">✕</button></div></div>`).join('');
+  let html=`<div style="padding:20px 24px 0;"><div class="progress">
+    <div class="ps done"><div class="ps-d">I</div><div class="ps-l">Auswahl</div></div>
+    <div class="ps now"><div class="ps-d">II</div><div class="ps-l">Prüfen</div></div>
+    <div class="ps"><div class="ps-d">III</div><div class="ps-l">Zahlung</div></div>
+    <div class="ps"><div class="ps-d">IV</div><div class="ps-l">Bestätigt</div></div>
+  </div></div>`;
+  html+=cart.map((item,i)=>`<div class="citem">
+    <div><div class="ci-name">${item.name}</div><div class="ci-detail">${item.origin} · ${item.roast} · 200g</div></div>
+    <div class="ci-r"><div class="ci-price">${item.price}</div><button class="ci-rm" onclick="removeItem(${i})">Entf.</button></div>
+  </div>`).join('');
   const total=cart.reduce((s,i)=>s+parseInt(i.price.replace('CHF ','')),0);
-  html+=`<div class="checkout-box"><div class="co-row"><span class="co-label">Lieferung</span><span class="co-val">48h · Frisch geröstet</span></div><div class="co-row"><span class="co-label">Versand</span><span class="co-val" style="color:var(--gold);">Gratis</span></div><div class="co-total"><div class="co-total-label">Total</div><div class="co-total-price">CHF ${total}</div></div><button class="btn-gold" onclick="checkout()">Jetzt bezahlen →</button></div>`;
+  html+=`<div class="co-box">
+    <div class="co-row"><span class="co-lbl">Lieferung</span><span class="co-val">48h · Frisch geröstet</span></div>
+    <div class="co-row"><span class="co-lbl">Versand</span><span class="co-val" style="color:var(--gold);">Gratis</span></div>
+    <div class="co-total"><span class="co-tl">Total</span><span class="co-tp">CHF ${total}</span></div>
+    <button class="btn btn-solid" onclick="checkout()">Bezahlen</button>
+  </div>`;
   c.innerHTML=html;
 }
-function checkout(){cart=[];document.getElementById('cart-count').textContent='0 Artikel';renderCart();showToast('✓ Bestellung aufgegeben — wird frisch geröstet!');updateOrderHist();}
-function updateOrderHist(){
+function checkout(){
+  cart=[];
+  document.getElementById('cart-count').textContent='Warenkorb';
+  renderCart();updateHist();
+  showToast('Bestellung aufgegeben');
+}
+function updateHist(){
   const h=document.getElementById('order-hist');
-  if(cart.length===0){h.innerHTML='<div style="padding:16px;font-size:10px;color:var(--grey);">Noch keine Bestellungen</div>';return;}
-  h.innerHTML=cart.map(i=>`<div class="prof-row"><span class="pr-label">${i.name}</span><span class="pr-val" style="color:var(--gold);">${i.price}</span></div>`).join('');
+  h.innerHTML=cart.length
+    ?cart.map(i=>`<div class="prow"><span class="pr-l">${i.name}</span><span class="pr-v" style="color:var(--gold);">${i.price}</span></div>`).join('')
+    :'<div style="padding:16px;font-size:9px;color:var(--grey);letter-spacing:1px;">Keine Bestellungen</div>';
 }
 
 // TOAST
-function showToast(msg){
+function showToast(m){
   const t=document.getElementById('toast');
-  t.textContent=msg;t.style.display='block';
-  clearTimeout(t._t);t._t=setTimeout(()=>t.style.display='none',3000);
+  t.textContent=m;t.style.display='block';
+  clearTimeout(t._);t._=setTimeout(()=>t.style.display='none',2800);
 }
 
 renderCart();
